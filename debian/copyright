@@ -1,0 +1,126 @@
+This work was packaged for Debian by:
+
+    YunQiang Su <wzssyqa@gmail.com> on Fri, 02 Apr 2010 08:52:57 +0800
+
+It was downloaded from http://www.isi.edu/nsnam/dist/release/
+
+Upstream Author(s):
+
+    The ns Team
+
+Copyright:
+
+    	* Copyright (C) Free Software Foundation          
+	* Copyright (c) 1987 Regents of the University of California.  
+	* Copyright (c) Intel Corporation. All rights reserved.  
+	* Copyright (c) @ Regents of the University of California. 
+	* Copyright (c) Sun Microsystems, Inc. All rights reserved.  
+	* Copyright (c) Xerox Corporation. All rights reserved.        
+	* Copyright (C) artofcode LLC, Benicia, CA. All rights reserved. 
+	* Copyright (c) Gaeil Ahn.   
+	* Copyright (C) Mingzhou Sun. All rights reserved.  
+	* Copyright (c) the Protocol Engineering Lab, University of Delaware
+	* Copyright (c) the University of Southern California    
+	* Copyright (C) USC/ISI           
+	* Copyright (c) International Computer Science Institute     
+	* Copyright (c) Marcello Caleffi, <marcello.caleffi@unina.it>,    
+	* Copyright (c) Nortel Networks     
+	* Copyright (C) Pierre L'Ecuyer (lecuyer@iro.umontreal.ca)    
+	* Copyright (c) Regents of the SIGNET lab, University of   
+	* Copyright (c) Regents of the University of Southern California. 
+	* Copyright (c) Samsung/CUNY 
+	* Copyright (C) Stephen Hemminger <shemminger@linux-foundation.org>    
+	* Copyright (C) Stephen Hemminger <shemminger@osdl.org>    
+	* Copyright (c) The Regents of the University of California.
+	* Copyright (c) Tom Kelly, University of Cambridge   
+	* Copyright (c) Trustees of Boston University      
+	* Copyright (C) John Heidemann <johnh@ficus.cs.ucla.edu>    
+	* Copyright (C) John Heidemann <johnh@isi.edu>    
+	* Copyright (c) the Protocol Engineering Lab, U of Delaware
+	* Copyright (c) the Rector and Board of Visitors
+	* Copyright (c) by the Rector and Board of Visitors of the University of Virginia.  
+	* Copyright (c) Carnegie Mellon University. All Rights  
+	* Copyright (c) Samsung Advanced Institute of Technology and The City University of New York   
+	* Copyright (c) Gray Watson     
+	* Copyright (c) Old Dominion University     
+	# Copyright (c) Old Dominion University     
+	* Copyright (c) Statistics Research, Bell Labs, Lucent Technologies and   
+	* Copyright (c) The University of North Carolina at Chapel Hill  
+
+
+License:
+
+	The source files in NS contain a number of different copyrights and
+	software licenses from various individuals and institutions.  In 2005, 
+	the code base was relicensed to a collection of GNU GPL compatible, 
+	free software licenses.  See
+	http://www.gnu.org/philosophy/license-list.html
+	for a collection of definitions of these terms.
+
+	Note:  See also the COPYRIGHTS file in this directory regarding the
+	copyrights on the ns-2 software.
+
+	The majority of software licenses use following types of licenses:
+	i) GNU GPL, with specific exception allowing the linking of the GPL
+	covered software with other software licensed with clauses in conflict with
+	the GPL (see below)
+	ii) original Berkeley-style licenses with advertising clauses
+	iii) modified Berkeley-style licenses (w/o advertising clause)
+
+	Other software licenses (e.g., Apache 2.0) also exist.
+
+	If you are considering the contribution of code to ns-2, please pick
+	a GNU GPL-compatible software license.  If you prefer GNU GPL, please
+	add the specific exception text listed below.
+
+	If you are considering the use of ns-2, consider that derivative
+	works or redistribution may be governed by the terms of the software
+	licenses used herein, including the GNU GPL and Berkeley-style
+	licenses with advertising clauses.
+
+
+	GNU GPL license with specific exception (for use on ns-2 project):
+	-------------------------------------------------------------------
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License,
+	version 2, as published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along
+	with this program; if not, visit http://www.gnu.org/licenses/gpl.html
+
+	The copyright of this module includes the following
+	linking-with-specific-other-licenses addition:
+
+	In addition, as a special exception, the copyright holders of
+	this module give you permission to combine (via static or
+	dynamic linking) this module with free software programs or
+	libraries that are released under the GNU LGPL and with code
+	included in the standard release of ns-2 under the Apache 2.0
+	license or under otherwise-compatible licenses with advertising
+	requirements (or modified versions of such code, with unchanged
+	license).  You may copy and distribute such a system following the
+	terms of the GNU GPL for this module and the licenses of the
+	other code concerned, provided that you include the source code of
+	that other code when and as the GNU GPL requires distribution of
+	source code.
+
+	Note that people who make modified versions of this module
+	are not obligated to grant this special exception for their
+	modified versions; it is their choice whether to do so.  The GNU
+	General Public License gives permission to release a modified
+	version without this exception; this exception also makes it
+	possible to release a modified version which carries forward this
+	exception.
+
+The Debian packaging is:
+
+    Copyright (C) 2010 YunQiang Su <wzssyqa@gmail.com>
+
+and is licensed under the GPL version 3, 
+see `/usr/share/common-licenses/GPL-3'.
+

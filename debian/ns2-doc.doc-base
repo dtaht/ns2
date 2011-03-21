@@ -1,0 +1,11 @@
+Document: ns2-everything-pdf
+Title: The ns Manual
+Author: The VINT Project
+Abstract: This document (ns Notes and Documentation) 
+ provides reference documentation for ns.
+Section: Programming/ns2
+
+Format: PDF
+Files: /usr/share/doc/ns2/everything.pdf.gz
+
+

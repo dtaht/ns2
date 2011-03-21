@@ -1,0 +1,43 @@
+ns2 (2.35~RC6-3) unstable; urgency=low
+
+  * build nse now
+  	add build dep libpcap0.8-dev 
+  	and patch for  moving tclcl's headers
+  * fix FTBFS for gcc 4.5 (Closes: #618105)
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Mon, 21 Mar 2011 15:56:30 +0800
+
+ns2 (2.35~RC6-2) unstable; urgency=low
+
+  * depends on tk-dev and tcl-dev instead 8.4 one
+  * depends on libxt-dev now,fixed FTBFS (Closes: #613021) 
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Mon, 28 Feb 2011 00:26:30 +0800
+
+ns2 (2.35~RC6-1) unstable; urgency=low
+
+  * new upstream version.
+  * bump standard to 3.9.1.
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Fri, 17 Sep 2010 14:29:37 +0800
+
+ns2 (2.35~RC5-1) unstable; urgency=low
+
+  * new upstream version 
+  * modify descript (Closes: #584642)
+  * add suggestion of ns2 in ns2-examples
+  * add doc-base
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Wed, 30 Jun 2010 14:33:57 +0800
+
+ns2 (2.35~RC4-1) unstable; urgency=low
+
+  * New upstream version
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Wed, 02 Jun 2010 08:52:57 +0800
+
+ns2 (2.35~RC3-1) unstable; urgency=low
+
+  * Initial release (Closes: #576241)
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Fri, 02 Apr 2010 08:52:57 +0800

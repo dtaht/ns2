@@ -1,0 +1,13 @@
+  ns2 for Debian
+  ---------------------
+
+This is ns2 packaged for Debian.
+
+This document contains information specific to the Debian packages of
+otcl.
+
+When packaging,We did not run test.
+If you want to test it:
+	install ns2-examples
+	cd usr/share/doc/ns2/examples/
+	./validate

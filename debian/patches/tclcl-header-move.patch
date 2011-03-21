@@ -1,0 +1,17 @@
+Index: ns-2.35-RC6/configure
+===================================================================
+--- ns-2.35-RC6.orig/configure	2011-03-22 22:03:30.688748390 +0800
++++ ns-2.35-RC6/configure	2011-03-22 22:04:26.598830377 +0800
+@@ -7452,7 +7452,8 @@
+                 /import/Tcl/include \
+                 /usr/local/include \
+                 /usr/contrib/include \
+-                /usr/include"
++                /usr/include \
++                /usr/include/tclcl"
+ TCLCL_H_PLACES_D="$d \
+  		$d/include"
+ TCLCL_LIB_PLACES="\
+ 
+ 
+
