@@ -2,6 +2,9 @@ ns2 (2.35~RC8-1) unstable; urgency=low
 
   * New upstream release.
   * drop call-constructor-directly.patch, mergered into upstream.
+  * fix FTBFS: expected primary-expression before 'struct'
+       add debian/patches/mac-802_11Ext_missing_cstddef.patch
+        (Closes: #624935).
 
  -- YunQiang Su <wzssyqa@gmail.com>  Wed, 10 Aug 2011 14:41:03 +0800
 
