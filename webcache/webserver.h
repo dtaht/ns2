@@ -68,7 +68,7 @@ struct job_s {
   Agent *tcp;
   Agent *snk;
   int size;
-  void *data;
+  int pid;
   job_s *next;
 };
 
@@ -98,7 +98,7 @@ class WebServer : public TimerHandler{
 	void set_queue_limit(int);
 
 	// Handling incoming job
-	double job_arrival(int, Node *, Agent *, Agent *, int, void *);
+	double job_arrival(int, Node *, Agent *, Agent *, int, int);
 
  private:
 	// The web page pool associated with this server

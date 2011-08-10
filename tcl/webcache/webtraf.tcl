@@ -68,7 +68,7 @@ PagePool/WebTraf set FLOW_SIZE_TH_ 15
 # 2: Chop long flows to short ones.
 PagePool/WebTraf set FLOW_SIZE_OPS_ 0
 
-PagePool/WebTraf instproc launch-req { id pid clnt svr ctcp csnk size pobj} {
+PagePool/WebTraf instproc launch-req { id pid clnt svr ctcp csnk size} {
     $self instvar timer_
 
     set launch_req 1
@@ -103,7 +103,7 @@ PagePool/WebTraf instproc launch-req { id pid clnt svr ctcp csnk size pobj} {
 	
 	
 	# define call-back function for request TCP
-	$ctcp proc done {} "$self done-req $id $pid $clnt $svr $ctcp $csnk $size $pobj $timer_"
+	$ctcp proc done {} "$self done-req $id $pid $clnt $svr $ctcp $csnk $size $timer_"
 	
 	# Trace web traffic flows (send request: client==>server).
 	if {[PagePool/WebTraf set req_trace_]} {	
@@ -116,7 +116,7 @@ PagePool/WebTraf instproc launch-req { id pid clnt svr ctcp csnk size pobj} {
 
 }
 
-PagePool/WebTraf instproc done-req { id pid clnt svr ctcp csnk size pobj timer} {
+PagePool/WebTraf instproc done-req { id pid clnt svr ctcp csnk size timer} {
     # Cancel the connection timer if any
     if {[PagePool/WebTraf set enable_conn_timer_]} {
 	$timer cancel
@@ -134,8 +134,8 @@ PagePool/WebTraf instproc done-req { id pid clnt svr ctcp csnk size pobj timer} 
 
     # request has completed successfully, now pass the request to web server
     # notify web server about the request
-    set delay [$self job_arrival $id $clnt $svr $ctcp $csnk $size $pobj]
-    #$self launch-resp $id $pid $svr $clnt $ctcp $csnk $size $pobj
+    set delay [$self job_arrival $id $clnt $svr $ctcp $csnk $size $pid]
+    #$self launch-resp $id $pid $svr $clnt $ctcp $csnk $size
 
     # this job is actually dropped due to server's queue limit
     if {$delay == 0} {
@@ -147,7 +147,7 @@ PagePool/WebTraf instproc done-req { id pid clnt svr ctcp csnk size pobj timer} 
 	# Recycle TCP agents
 	$self recycle $ctcp $csnk	
 	# is there any difference for rejected requests?
-	$self doneObj $pobj
+	$self doneObj $pid
     } else {
 	# Trace web traffic flows (recv request: client==>server).
 	# Request has been received by server successfully
@@ -158,7 +158,7 @@ PagePool/WebTraf instproc done-req { id pid clnt svr ctcp csnk size pobj timer} 
     
 }
 
-PagePool/WebTraf instproc launch-resp { id pid svr clnt stcp ssnk size pobj} {
+PagePool/WebTraf instproc launch-resp { id pid svr clnt stcp ssnk size} {
     set flow_th [PagePool/WebTraf set FLOW_SIZE_TH_]
 
     set ns [Simulator instance]
@@ -188,7 +188,7 @@ PagePool/WebTraf instproc launch-resp { id pid svr clnt stcp ssnk size pobj} {
     }
 
     # define callback function for response tcp
-    $stcp proc done {} "$self done-resp $id $pid $clnt $svr $stcp $ssnk $size $sent $flow_th [$ns now] [$stcp set fid_] $pobj"
+    $stcp proc done {} "$self done-resp $id $pid $clnt $svr $stcp $ssnk $size $sent $flow_th [$ns now] [$stcp set fid_]"
     
     # Trace web traffic flows (send responese: server->client).
     if {[PagePool/WebTraf set resp_trace_]} {
@@ -198,7 +198,7 @@ PagePool/WebTraf instproc launch-resp { id pid svr clnt stcp ssnk size pobj} {
     $self send-message $stcp $sent
 }
 
-PagePool/WebTraf instproc done-resp { id pid clnt svr stcp ssnk size sent sent_th {startTime 0} {fid 0} pobj } {
+PagePool/WebTraf instproc done-resp { id pid clnt svr stcp ssnk size sent sent_th {startTime 0} {fid 0} } {
     set ns [Simulator instance]
     
     # modified to trace web traffic flows (recv responese: server->client).
@@ -257,7 +257,7 @@ PagePool/WebTraf instproc done-resp { id pid clnt svr stcp ssnk size sent sent_t
     } else {
 	# Recycle TCP agents
 	$self recycle $stcp $ssnk	
-	$self doneObj $pobj
+	$self doneObj $pid
     }
 }
 

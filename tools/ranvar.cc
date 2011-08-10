@@ -41,7 +41,7 @@
 
 #ifndef lint
 static const char rcsid[] =
-    "@(#) $Header: /cvsroot/nsnam/ns-2/tools/ranvar.cc,v 1.24 2009/01/02 21:50:24 tom_henderson Exp $ (Xerox)";
+    "@(#) $Header: /cvsroot/nsnam/ns-2/tools/ranvar.cc,v 1.25 2011/05/16 03:49:09 tom_henderson Exp $ (Xerox)";
 #endif
 
 #include <stdio.h>
@@ -216,7 +216,7 @@ double GammaRandomVariable::value()
 	// ACM Transactions on mathematical software, Vol. 26, No. 3, Sept. 2000
 	if (alpha_ < 1) {
 		double u = rng_->uniform(1.0);
-		return GammaRandomVariable::GammaRandomVariable(1.0 + alpha_, beta_).value() * pow (u, 1.0 / alpha_);
+		return GammaRandomVariable(1.0 + alpha_, beta_).value() * pow (u, 1.0 / alpha_);
 	}
 	
 	double x, v, u;
