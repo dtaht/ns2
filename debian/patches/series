@@ -1,3 +1,4 @@
+mac-802_11Ext_missing_cstddef.patch
 ftbfs-kfreebsd-bpf.patch
 tclcl-header-move.patch
 ns-man-Poison-reverse
