@@ -2,4 +2,3 @@ ftbfs-kfreebsd-bpf.patch
 tclcl-header-move.patch
 ns-man-Poison-reverse
 validate-test-exit-number
-call-constructor-directly.patch

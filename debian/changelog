@@ -1,3 +1,10 @@
+ns2 (2.35~RC8-1) unstable; urgency=low
+
+  * New upstream release.
+  * drop call-constructor-directly.patch, mergered into upstream.
+
+ -- YunQiang Su <wzssyqa@gmail.com>  Wed, 10 Aug 2011 14:41:03 +0800
+
 ns2 (2.35~RC6-4) unstable; urgency=low
 
   * add DM-Upload-Allowed: yes
