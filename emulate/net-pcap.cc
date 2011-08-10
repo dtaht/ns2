@@ -55,10 +55,6 @@ static const char rcsid[] =
 #include <sys/systeminfo.h>
 #endif
 
-#if !defined(__linux__)&&!defined(__APPLE__)
-#include <net/bpf.h>
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #include <pcap.h>
