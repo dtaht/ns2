@@ -34,7 +34,7 @@
 
 #ifndef lint
 static const char rcsid[] =
-    "@(#) $Header: /cvsroot/nsnam/ns-2/tcp/tcp.cc,v 1.181 2010/04/02 23:22:43 tom_henderson Exp $ (LBL)";
+    "@(#) $Header: /cvsroot/nsnam/ns-2/tcp/tcp.cc,v 1.182 2011/06/20 04:51:46 tom_henderson Exp $ (LBL)";
 #endif
 
 #include <stdlib.h>
@@ -699,7 +699,9 @@ void TcpAgent::output(int seqno, int reason)
 	if (seqno == 0) {
 		if (syn_) {
 			databytes = 0;
-			curseq_ += 1;
+			if (maxseq_ == -1) {
+				curseq_ += 1; /*increment only on initial SYN*/
+			}
 			hdr_cmn::access(p)->size() = tcpip_base_hdr_size_;
 			++syn_connects_;
 			//fprintf(stderr, "TCPAgent: syn_connects_ %d max_connects_ %d\n",

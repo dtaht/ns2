@@ -289,7 +289,7 @@ Class Test/1node-http_1_1_ecn+ -superclass TestSuite
 Test/1node-http_1_1_ecn+ instproc init topo {
         global defaultRNG
 	$self instvar net_ defNet_ test_
-        $$defaultRNG seed 9999
+        $defaultRNG seed 9999
         set net_ $topo
 	set defNet_ DB
 	set test_ 1node-http_1_1_ecn+

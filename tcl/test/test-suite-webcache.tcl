@@ -1748,7 +1748,7 @@ Test/Mcast-PB instproc collect-stat {} {
 		set rt(min) 0
 	}
 	set sr [expr double($sn) / $gn * 100]
-	if [catch {set st(avg) [expr double($st(avg)) / $sn]}] {
+	if {$sn == 0 || [catch {set st(avg) [expr double($st(avg)) / $sn]}]} {
 		set st(avg) 0	;# No stale hits
 	} 
 	set rt(avg) [expr double($rt(avg)) / $gn]

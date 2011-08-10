@@ -13,7 +13,7 @@
 // File:  p802_15_4trace.h
 // Mode:  C++; c-basic-offset:8; tab-width:8; indent-tabs-mode:t
 
-// $Header: /cvsroot/nsnam/ns-2/wpan/p802_15_4trace.h,v 1.1 2005/01/24 18:34:25 haldar Exp $
+// $Header: /cvsroot/nsnam/ns-2/wpan/p802_15_4trace.h,v 1.2 2011/06/22 04:03:26 tom_henderson Exp $
 
 /*
  * Copyright (c) 2003-2004 Samsung Advanced Institute of Technology and
@@ -27,11 +27,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 3. All advertising materials mentioning features or use of this software
- *    must display the following acknowledgement:
- *	This product includes software developed by the Joint Lab of Samsung 
- *      Advanced Institute of Technology and The City University of New York.
- * 4. Neither the name of Samsung Advanced Institute of Technology nor of 
+ * 3. Neither the name of Samsung Advanced Institute of Technology nor of 
  *    The City University of New York may be used to endorse or promote 
  *    products derived from this software without specific prior written 
  *    permission.

@@ -34,7 +34,7 @@
  * Ported from CMU/Monarch's code, appropriate copyright applies.
  * nov'98 -Padma.
  *
- * $Header: /cvsroot/nsnam/ns-2/trace/cmu-trace.cc,v 1.96 2010/05/09 22:28:41 tom_henderson Exp $
+ * $Header: /cvsroot/nsnam/ns-2/trace/cmu-trace.cc,v 1.97 2010/10/14 04:18:37 tom_henderson Exp $
  */
 
 #include <packet.h>
@@ -512,6 +512,15 @@ void
 CMUTrace::format_dsr(Packet *p, int offset)
 {
 	hdr_sr *srh = hdr_sr::access(p);
+	int last_err_index = 0;
+	int last_reply_index = 0;
+        
+	if (srh->num_route_errors() > 1) {
+	    last_err_index = srh->num_route_errors() - 1;
+	}
+	if (srh->route_reply_len() > 1) {
+	    last_reply_index = srh->route_reply_len() - 1;
+	}
 
 	if (pt_->tagged()) {
 	    sprintf(pt_->buffer() + offset,
@@ -525,12 +534,12 @@ CMUTrace::format_dsr(Packet *p, int offset)
 		    srh->rtreq_seq(),
 		    srh->route_reply_len(),
 		    srh->reply_addrs()[0].addr,
-		    srh->reply_addrs()[srh->route_reply_len()-1].addr,
+		    srh->reply_addrs()[last_reply_index].addr,
 		    srh->route_error(),
 		    srh->num_route_errors(),
-		    srh->down_links()[srh->num_route_errors() - 1].tell_addr,
-		    srh->down_links()[srh->num_route_errors() - 1].from_addr,
-		    srh->down_links()[srh->num_route_errors() - 1].to_addr);
+		    srh->down_links()[last_err_index].tell_addr,
+		    srh->down_links()[last_err_index].from_addr,
+		    srh->down_links()[last_err_index].to_addr);
 	    return;
 	} else if (newtrace_) {
 	    sprintf(pt_->buffer() + offset, 
@@ -545,13 +554,13 @@ CMUTrace::format_dsr(Packet *p, int offset)
 		srh->route_reply_len(),
 		// the dest of the src route
 		srh->reply_addrs()[0].addr,
-		srh->reply_addrs()[srh->route_reply_len()-1].addr,
+		srh->reply_addrs()[last_reply_index].addr,
 
 		srh->route_error(),
 		srh->num_route_errors(),
-		srh->down_links()[srh->num_route_errors() - 1].tell_addr,
-		srh->down_links()[srh->num_route_errors() - 1].from_addr,
-		srh->down_links()[srh->num_route_errors() - 1].to_addr);
+		srh->down_links()[last_err_index].tell_addr,
+		srh->down_links()[last_err_index].from_addr,
+		srh->down_links()[last_err_index].to_addr);
 
 	   return;
 	}
@@ -567,13 +576,13 @@ CMUTrace::format_dsr(Packet *p, int offset)
 		srh->route_reply_len(),
 		// the dest of the src route
 		srh->reply_addrs()[0].addr,
-		srh->reply_addrs()[srh->route_reply_len()-1].addr,
+		srh->reply_addrs()[last_reply_index].addr,
 
 		srh->route_error(),
 		srh->num_route_errors(),
-		srh->down_links()[srh->num_route_errors() - 1].tell_addr,
-		srh->down_links()[srh->num_route_errors() - 1].from_addr,
-		srh->down_links()[srh->num_route_errors() - 1].to_addr);
+		srh->down_links()[last_err_index].tell_addr,
+		srh->down_links()[last_err_index].from_addr,
+		srh->down_links()[last_err_index].to_addr);
 }
 
 void

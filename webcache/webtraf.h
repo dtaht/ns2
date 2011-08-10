@@ -56,6 +56,7 @@
 #ifndef ns_webtraf_h
 #define ns_webtraf_h
 
+#include <map>
 #include "ranvar.h"
 #include "random.h"
 #include "timer-handler.h"
@@ -123,7 +124,7 @@ public:
 	}
 
 	void launchReq(Node*, void*, int, int);
-	void launchResp(int, Node*, Node*, Agent*, Agent*, int, void*);
+	void launchResp(int, Node*, Node*, Agent*, Agent*, int, int);
 	inline int nTcp() { return nTcp_; }
 	inline int nSink() { return nSink_; }
 	inline int isdebug() { return debug_; }
@@ -137,6 +138,7 @@ public:
 	TcpSink* picksink();
 	// Given sever's node id, find server
 	int find_server(int);
+	void donePage (int);
 
 protected:
 	virtual int command(int argc, const char*const* argv);
@@ -203,6 +205,8 @@ protected:
 	int recycle_page_;
 
 	int dont_recycle_; // Do not recycle tcp agents
+
+	std::map<int, void *> pages_;  // Hold pointers to web pages
 };
 
 #endif // ns_webtraf_h
