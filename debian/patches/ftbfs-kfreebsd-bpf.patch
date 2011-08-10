@@ -1,3 +1,6 @@
+Description: include net/bpf.h on kfreebsd to enable bpf
+Author: Romain Francoise <rfrancoise@debian.org>
+Origin: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=619684
 Index: ns2/emulate/net-pcap.cc
 ===================================================================
 --- ns2.orig/emulate/net-pcap.cc	2011-08-10 14:57:34.480781056 +0800

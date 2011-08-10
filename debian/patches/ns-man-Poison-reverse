@@ -1,4 +1,4 @@
-groff take a string as marco,hack it.
+Description: groff take a string as marco,hack it.
 Index: ns2-2.35~RC3/ns.1
 ===================================================================
 --- ns2-2.35~RC3.orig/ns.1	2010-05-30 17:49:24.428513282 +0800

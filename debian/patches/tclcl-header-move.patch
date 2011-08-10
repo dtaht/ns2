@@ -1,3 +1,5 @@
+Description: tclcl's debian packages ship its headers to /usr/include/tclcl
+              instead of /usr/include/
 Index: ns-2.35-RC6/configure
 ===================================================================
 --- ns-2.35-RC6.orig/configure	2011-03-22 22:03:30.688748390 +0800
