@@ -4,13 +4,13 @@ This work was packaged for Debian by:
 
 It was downloaded from http://www.isi.edu/nsnam/dist/release/
 
-Upstream Author(s):
+Upstream Author:
 
     The ns Team
 
 Copyright:
 
-    	* Copyright (C) Free Software Foundation          
+   	* Copyright (C) Free Software Foundation          
 	* Copyright (c) 1987 Regents of the University of California.  
 	* Copyright (c) Intel Corporation. All rights reserved.  
 	* Copyright (c) @ Regents of the University of California. 
@@ -43,7 +43,6 @@ Copyright:
 	* Copyright (c) Samsung Advanced Institute of Technology and The City University of New York   
 	* Copyright (c) Gray Watson     
 	* Copyright (c) Old Dominion University     
-	# Copyright (c) Old Dominion University     
 	* Copyright (c) Statistics Research, Bell Labs, Lucent Technologies and   
 	* Copyright (c) The University of North Carolina at Chapel Hill  
 
