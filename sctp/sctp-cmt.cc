@@ -2274,7 +2274,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
   /* NE: let's decide which block (Gap Ack or Non-Renegable Gap Ack) 
      is used for the gap ack processing */
   Boolean_E eUseGapAckBlock = FALSE;
-  Boolean_E eUseNonRenegGapAckBlock = FALSE;
   u_int uiGapAckStartTsn;
   u_int uiNonRenegGapAckStartTsn;
 
@@ -2310,7 +2309,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
     if ((usNumGapAckBlocks == 0) && (usNumNonRenegGapAckBlocks > 0)) {
       spCurrGapAck = spCurrNonRenegGapAck; 
       
-      eUseNonRenegGapAckBlock = TRUE;
       eUseGapAckBlock = FALSE;
       
       uiNonRenegGapAckStartTsn = 
@@ -2321,7 +2319,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
     } /* NE: if there is no reported Non-Renegable Gap Ack Blocks, 
 	 just use Gap Ack Blocks */
     else if (usNumNonRenegGapAckBlocks == 0 && (usNumGapAckBlocks > 0)) {
-      eUseNonRenegGapAckBlock = FALSE;
       eUseGapAckBlock = TRUE;
 
       uiGapAckStartTsn = spSackChunk->uiCumAck + spCurrGapAck->usStartOffset;
@@ -2337,7 +2334,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 	spSackChunk->uiCumAck + spCurrNonRenegGapAck->usStartOffset;
 
       if (uiGapAckStartTsn < uiNonRenegGapAckStartTsn) {
-	eUseNonRenegGapAckBlock = FALSE;
 	eUseGapAckBlock = TRUE;
 
 	DBG_PL(ProcessGapAckBlocks,"uiGapAckStartTsn=%u"), 
@@ -2345,7 +2341,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
       }
       else if (uiNonRenegGapAckStartTsn < uiGapAckStartTsn) {
 	spCurrGapAck = spCurrNonRenegGapAck; 
-	eUseNonRenegGapAckBlock = TRUE;
 	eUseGapAckBlock = FALSE;
 	
 	DBG_PL(ProcessGapAckBlocks,"uiNonRenegGapAckStartTsn=%u"), 
@@ -2778,7 +2773,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 			
 			spCurrGapAck = spCurrNonRenegGapAck; 
 			
-			eUseNonRenegGapAckBlock = TRUE;
 			eUseGapAckBlock = FALSE;
 			
 			uiNonRenegGapAckStartTsn = 
@@ -2795,7 +2789,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 		      else if ((usNumNonRenegGapAckBlocks == usNumNonRenegGapAcksProcessed)
 			       && (usNumGapAckBlocks > usNumGapAcksProcessed)) {
 			
-			eUseNonRenegGapAckBlock = FALSE;
 			eUseGapAckBlock = TRUE;
 			
 			uiGapAckStartTsn = 
@@ -2819,7 +2812,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 			
 			if (uiGapAckStartTsn < uiNonRenegGapAckStartTsn) {
 			  
-			  eUseNonRenegGapAckBlock = FALSE;
 			  eUseGapAckBlock = TRUE;
 			  
 			  DBG_PL(ProcessGapAckBlocks, "jump to next gap ack block") 
@@ -2832,7 +2824,6 @@ Boolean_E SctpCMTAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 			  
 			  spCurrGapAck = spCurrNonRenegGapAck; 
 			  
-			  eUseNonRenegGapAckBlock = TRUE;
 			  eUseGapAckBlock = FALSE;
 
 			  DBG_PL(ProcessGapAckBlocks, "jump to next nr gap ack block") 
@@ -3677,7 +3668,6 @@ int SctpCMTAgent::ProcessChunk(u_char *ucpInChunk, u_char **ucppOutData)
   SctpHeartbeatAckChunk_S *spHeartbeatAckChunk = NULL;
 
   /****** Begin CMT Change ******/
-  Boolean_E eFoundNonPFDest =  FALSE;
   Boolean_E eCmtPFCwndChange = FALSE;
   u_int uiTotalOutstanding = 0;
   Boolean_E eThisDestWasInactive = FALSE; /* For triggering data tx in CMT */
@@ -3931,7 +3921,6 @@ int SctpCMTAgent::ProcessChunk(u_char *ucpInChunk, u_char **ucppOutData)
                   spCurrDest = (SctpDest_S *) spCurrNode->vpData;
 		  if (spCurrDest->eStatus != SCTP_DEST_STATUS_POSSIBLY_FAILED)
 		    {
-		      eFoundNonPFDest = TRUE;
 		      DBG_PL(ProcessChunk, "Found non PF dest=%p"), 
 			spCurrDest DBG_PR;
 		      /* break; */

@@ -33,6 +33,7 @@
  * ACM Computer Communication Review, July 2006, Vol 36, No 3, pp. 67-76.
 
  * Contact: Michele Weigle (mweigle@cs.odu.edu)
+ * http://www.cs.odu.edu/inets/Tmix
  */
 
 #include <tclcl.h>
@@ -114,13 +115,6 @@ int Tmix_DelayBoxNode::command(int argc, const char*const* argv) {
 			classifier_->set_lossless();
 			return (TCL_OK);
 		}
-		/*
-		else if (!strcmp (argv[1], "close-flowfile")) {
-			if (cvecfp_) 
-				fclose(cvecfp_);
-			return (TCL_OK);
-		}
-		*/
 	}
 	return (Node::command(argc, argv));
 }
@@ -148,8 +142,8 @@ Tmix_DelayBoxClassifier::~Tmix_DelayBoxClassifier()
 	}
 }
 
-void Tmix_DelayBoxClassifier::create_flow_table (const char* src, const char *dst, 
-						 FILE* fp)
+void Tmix_DelayBoxClassifier::create_flow_table (const char* src, 
+						 const char *dst, FILE* fp)
 					  
 {
     char cvec[100];
@@ -189,14 +183,14 @@ void Tmix_DelayBoxClassifier::create_flow_table (const char* src, const char *ds
 		    pair = new DelayBoxPair(atoi(src), atoi(dst), fid);
 		    q = new DelayBoxQueue();
 		    timer = new DelayBoxTimer(this, atoi(src), atoi(dst), fid);
-		    flow = new DelayBoxFlow(delay/2 ,fwdloss, linkspd, q, timer);
+		    flow = new DelayBoxFlow(delay/2, fwdloss, linkspd, q,timer);
 		    flows_[*pair] = flow;
 		    delete pair;
 
 		    pair = new DelayBoxPair(atoi(dst), atoi(src), fid);
 		    q = new DelayBoxQueue();
 		    timer = new DelayBoxTimer(this, atoi(dst), atoi(src), fid);
-		    flow = new DelayBoxFlow(delay/2, revloss, linkspd, q, timer);
+		    flow = new DelayBoxFlow(delay/2, revloss, linkspd, q,timer);
 		    flows_[*pair] = flow;
 		    delete pair;
 	    }
@@ -272,7 +266,7 @@ void Tmix_DelayBoxClassifier::recv (Packet* p, Handler* )
 	if (flow->queue_->oneitem()) {  
 		/* only 1 element is present in the queue */
 		time = now();
-                flow->timer_->sched(time_to_send - time);  // schedule the timer 
+                flow->timer_->sched(time_to_send - time); // schedule the timer 
 		if (debug_ > 4) {
 			fprintf (stderr, "     set sched for %fs\n",
 				 time_to_send - time);

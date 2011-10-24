@@ -5,14 +5,14 @@
 # we build this functionality based on byte-stream model of underlying 
 # TCP connection.
 # 
-# $Header: /cvsroot/nsnam/ns-2/tcl/test/test-suite-mcache.tcl,v 1.15 2006/01/24 23:00:06 sallyfloyd Exp $
+# $Header: /cvsroot/nsnam/ns-2/tcl/test/test-suite-mcache.tcl,v 1.16 2011/10/07 17:43:27 tom_henderson Exp $
 
 #----------------------------------------------------------------------
 # Related Files
 #----------------------------------------------------------------------
 #source misc.tcl
 remove-all-packet-headers       ; # removes all except common
-add-packet-header Flags IP TCP HttpInval ; # hdrs reqd for validation test
+add-packet-header Flags IP TCP HttpInval RAP; # hdrs reqd for validation test
  
 # FOR UPDATING GLOBAL DEFAULTS:
 Agent/TCP set precisionReduce_ false ;   # default changed on 2006/1/24.

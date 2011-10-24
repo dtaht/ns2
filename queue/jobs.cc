@@ -46,7 +46,7 @@
  * Grateful acknowledgments to Tarek Abdelzaher for his help and       
  * comments.                                                           
  *                                                                     
- * $Id: jobs.cc,v 1.4 2010/03/08 05:54:53 tom_henderson Exp $                   
+ * $Id: jobs.cc,v 1.5 2011/10/02 22:32:34 tom_henderson Exp $                   
  * 							              
  */
 
@@ -313,7 +313,7 @@ int JoBS::command(int argc, const char*const* argv) {
 		if (strcmp(argv[1], "copyright-info") == 0) {
 			fprintf(stdout, "\n----------------------------------------------------------\n\n");
 			fprintf(stdout, "JoBS scheduler/dropper [prototype ns-2 implementation]\n");
-			fprintf(stdout, "Version 1.0 (CVS Revision: $Id: jobs.cc,v 1.4 2010/03/08 05:54:53 tom_henderson Exp $)\n\n");
+			fprintf(stdout, "Version 1.0 (CVS Revision: $Id: jobs.cc,v 1.5 2011/10/02 22:32:34 tom_henderson Exp $)\n\n");
 			fprintf(stdout, "ns-2 implementation by Nicolas Christin <nicolas@cs.virginia.edu>\n");
 			fprintf(stdout, "JoBS algorithms proposed by Nicolas Christin and Jorg Liebeherr.\n");
 			fprintf(stdout, "Grateful acknowledgments to Tarek Abdelzaher for his help and comments.\n");
@@ -561,10 +561,7 @@ double* JoBS::adjustRatesRDC() {
 	double* result;
 	double credit, available, lower_bound, upper_bound;
 	double bk;
-	double cur_time;
 	
-	cur_time = Scheduler::instance().clock(); 
-  
 	activeClasses = 0;
 	RDC_Classes = 0;
 

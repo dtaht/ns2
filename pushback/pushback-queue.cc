@@ -149,7 +149,10 @@ PushbackQueue::timeout(int ) {
   // but the below is more accurate as RED avg queue takes time to come down and
   // hence drop rate goes down much slower.
   double dropRate1= getDropRate();
-  double dropRate2= ((double)bdrops/barrivals);
+  double dropRate2= 0;
+  if (barrivals > 0) {
+  	dropRate2 = (double)bdrops/barrivals;
+  }
 
   if (dropRate1 > 0 || dropRate2 > 0) {
 	  if (verbose_) 

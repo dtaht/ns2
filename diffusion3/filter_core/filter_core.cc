@@ -3,7 +3,7 @@
 // authors         : Chalermek Intanagonwiwat and Fabio Silva
 //
 // Copyright (C) 2000-2003 by the University of Southern California
-// $Id: filter_core.cc,v 1.5 2010/03/08 05:54:49 tom_henderson Exp $
+// $Id: filter_core.cc,v 1.6 2011/10/02 22:32:34 tom_henderson Exp $
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License,
@@ -949,10 +949,12 @@ DiffusionCoreAgent::DiffusionCoreAgent(int argc, char **argv)
   int opt;
   int debug_level;
 #endif // NS_DIFFUSION
-  DeviceList *in_devices, *out_devices, *local_out_devices;
+#ifdef IO_LOG
+  DeviceList *in_devices;
+#endif
+  DeviceList *out_devices, *local_out_devices;
   DiffusionIO *device;
   TimerCallback *callback;
-  char *node_id_env;
 #ifdef USE_EMSIM
   char *sim_id = getenv("SIM_ID");
   char *sim_group = getenv("SIM_GROUP");
@@ -974,10 +976,11 @@ DiffusionCoreAgent::DiffusionCoreAgent(int argc, char **argv)
   config_file_ = NULL;
   stop_time = 0;
 
-  node_id_env = getenv("node_addr");
   diffusion_port_ = DEFAULT_DIFFUSION_PORT;
 
 #ifndef NS_DIFFUSION
+  char *node_id_env;
+  node_id_env = getenv("node_addr");
   // Parse command line options
   while (1){
     opt = getopt(argc, argv, COMMAND_LINE_ARGS);
@@ -1192,8 +1195,8 @@ DiffusionCoreAgent::DiffusionCoreAgent(int argc, char **argv)
     out_devices = &(out_devices_);
     local_out_devices = &(local_out_devices_);
   }
-#else
   in_devices = &(in_devices_);
+#else
   out_devices = &(out_devices_);
   local_out_devices = &(local_out_devices_);
 #endif // IO_LOG

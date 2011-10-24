@@ -3,7 +3,7 @@
 // authors         : John Heidemann and Fabio Silva
 //
 // Copyright (C) 2000-2003 by the University of Southern California
-// $Id: dr.cc,v 1.19 2010/03/08 05:54:49 tom_henderson Exp $
+// $Id: dr.cc,v 1.20 2011/10/02 22:32:34 tom_henderson Exp $
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License,
@@ -516,7 +516,6 @@ int DiffusionRouting::sendRmst(handle publication_handle,
   void *frag_ptr, *blob_ptr;
   char *blob;
   timeval send_interval;
-  int retval;
   int id = GetRand() % 500;
   int size;
   int num_frag;
@@ -563,7 +562,7 @@ int DiffusionRouting::sendRmst(handle publication_handle,
     rmst_data_attr->setVal(frag_ptr, fragment_size);
 
   // Send 1st fragment
-  retval = send(publication_handle, send_attrs);
+  send(publication_handle, send_attrs);
 
   // Send other fragments
   for (int i = 1; i <= num_frag; i++){
@@ -580,7 +579,7 @@ int DiffusionRouting::sendRmst(handle publication_handle,
       rmst_data_attr->setVal(frag_ptr, max_frag_len);
     else
       rmst_data_attr->setVal(frag_ptr, fragment_size);
-    retval = send(publication_handle, send_attrs);
+    send(publication_handle, send_attrs);
   }
 
   ClearAttrs(send_attrs);

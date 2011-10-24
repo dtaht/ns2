@@ -8,16 +8,11 @@
 #*************************************************************************
 # Tests to validate Tmix
 #
-#  Lossy-orig - enforce losses, use original cvec format
-#  Lossy-alt - enforce losses, use alternate cvec format
 #  Lossless-orig - don't enforce losses, use original cvec format
 #  Lossless-alt - don't enforce losses, use alternate cvec format
-#  Oneway-lossy-orig - use one-way agent, etc.
-#  Oneway-lossy-alt
-#  Oneway-lossless-orig
+#  Lossy-alt - enforce losses, use alternate cvec format
+#  Oneway-lossy-alt - use one-way agent, etc.
 #  Oneway-lossless-alt
-#
-# TODO: run all of these combinations without writing 2^n tests
 #
 #*************************************************************************
 
@@ -86,11 +81,9 @@ TestSuite instproc setup_topo {} {
     $ns_ use-scheduler Heap
 
     Trace set show_tcphdr_ 1 
-    Agent/TCP set minrto_ 1;     # ns-2.27 value
     Agent/TCP/FullTcp set segsize_ 1460;
     Agent/TCP/FullTcp set nodelay_ true;
     Agent/TCP/FullTcp set segsperack_ 2;
-    Agent/TCP/FullTcp set interval_ 0.1;
 }
 
 TestSuite instproc start_tracing {} {
@@ -111,52 +104,6 @@ TestSuite instproc start_tracing {} {
     $ns_ trace-queue $node_(r2) $node_(k1) $trace_file
     $ns_ trace-queue $node_(k2) $node_(r2) $trace_file
     $ns_ trace-queue $node_(r2) $node_(k2) $trace_file
-}
-
-#
-# Lossy-orig
-#
-Class Test/Lossy-orig -superclass TestSuite
-Test/Lossy-orig instproc init topo {
-    global defaultRNG
-    $self instvar net_ defNet_ test_
-    $defaultRNG seed 9999
-    set net_ $topo
-    set defNet_ DB
-    set test_ Lossy-orig
-    $self next 0
-}
-
-Test/Lossy-orig instproc run {} {
-    global INBOUND_ORIG OUTBOUND_ORIG END WARMUP
-    $self instvar ns_ node_
-    $self setup_topo
-
-    # setup Tmix-DB nodes
-    $node_(r1) set-cvfile $INBOUND_ORIG [$node_(s1) id] [$node_(k1) id]
-    $node_(r2) set-cvfile $OUTBOUND_ORIG [$node_(k2) id] [$node_(s2) id]
-    
-    # setup Tmix nodes
-    set tmix(0) [new Tmix]
-    $tmix(0) set-init $node_(s1);
-    $tmix(0) set-acc $node_(k1);
-    $tmix(0) set-ID 7
-    $tmix(0) set-cvfile $INBOUND_ORIG
-    
-    set tmix(1) [new Tmix]
-    $tmix(1) set-init $node_(k2);
-    $tmix(1) set-acc $node_(s2);
-    $tmix(1) set-ID 8
-    $tmix(1) set-cvfile $OUTBOUND_ORIG
-    
-    $ns_ at 0.0 "$tmix(0) start"
-    $ns_ at 0.0 "$tmix(1) start"
-    $ns_ at $WARMUP "$self start_tracing"
-    $ns_ at $END "$tmix(0) stop"
-    $ns_ at $END "$tmix(1) stop"
-    $ns_ at [expr $END + 1] "$ns_ halt"
-    
-    $ns_ run
 }
 
 #
@@ -188,12 +135,14 @@ Test/Lossy-alt instproc run {} {
     $tmix(0) set-acc $node_(k1);
     $tmix(0) set-ID 7
     $tmix(0) set-cvfile $INBOUND_ALT
+    $tmix(0) set-TCP Newreno
     
     set tmix(1) [new Tmix]
     $tmix(1) set-init $node_(k2);
     $tmix(1) set-acc $node_(s2);
     $tmix(1) set-ID 8
     $tmix(1) set-cvfile $OUTBOUND_ALT
+    $tmix(1) set-TCP Newreno
     
     $ns_ at 0.0 "$tmix(0) start"
     $ns_ at 0.0 "$tmix(1) start"
@@ -236,12 +185,14 @@ Test/Lossless-orig instproc run {} {
     $tmix(0) set-acc $node_(k1);
     $tmix(0) set-ID 7
     $tmix(0) set-cvfile $INBOUND_ORIG
+    $tmix(0) set-TCP Newreno
 
     set tmix(1) [new Tmix]
     $tmix(1) set-init $node_(k2);
     $tmix(1) set-acc $node_(s2);
     $tmix(1) set-ID 8
     $tmix(1) set-cvfile $OUTBOUND_ORIG
+    $tmix(1) set-TCP Newreno
 
     $ns_ at 0.0 "$tmix(0) start"
     $ns_ at 0.0 "$tmix(1) start"
@@ -284,61 +235,15 @@ Test/Lossless-alt instproc run {} {
     $tmix(0) set-acc $node_(k1);
     $tmix(0) set-ID 7
     $tmix(0) set-cvfile $INBOUND_ALT
+    $tmix(0) set-TCP Newreno
 
     set tmix(1) [new Tmix]
     $tmix(1) set-init $node_(k2);
     $tmix(1) set-acc $node_(s2);
     $tmix(1) set-ID 8
     $tmix(1) set-cvfile $OUTBOUND_ALT
+    $tmix(1) set-TCP Newreno
 
-    $ns_ at 0.0 "$tmix(0) start"
-    $ns_ at 0.0 "$tmix(1) start"
-    $ns_ at $WARMUP "$self start_tracing"
-    $ns_ at $END "$tmix(0) stop"
-    $ns_ at $END "$tmix(1) stop"
-    $ns_ at [expr $END + 1] "$ns_ halt"
-    
-    $ns_ run
-}
-
-#
-# Oneway-lossy-orig
-#
-Class Test/Oneway-lossy-orig -superclass TestSuite
-Test/Oneway-lossy-orig instproc init topo {
-    global defaultRNG
-    $self instvar net_ defNet_ test_
-    $defaultRNG seed 9999
-    set net_ $topo
-    set defNet_ DB
-    set test_ Oneway-lossy-orig
-    $self next 0
-}
-
-Test/Oneway-lossy-orig instproc run {} {
-    global INBOUND_ORIG OUTBOUND_ORIG END WARMUP
-    $self instvar ns_ node_
-    $self setup_topo
-
-    # setup Tmix-DB nodes
-    $node_(r1) set-cvfile $INBOUND_ORIG [$node_(s1) id] [$node_(k1) id]
-    $node_(r2) set-cvfile $OUTBOUND_ORIG [$node_(k2) id] [$node_(s2) id]
-    
-    # setup Tmix nodes
-    set tmix(0) [new Tmix]
-    $tmix(0) set-init $node_(s1);
-    $tmix(0) set-acc $node_(k1);
-    $tmix(0) set-ID 7
-    $tmix(0) set-cvfile $INBOUND_ORIG
-    $tmix(0) set-agent-type one-way
-    
-    set tmix(1) [new Tmix]
-    $tmix(1) set-init $node_(k2);
-    $tmix(1) set-acc $node_(s2);
-    $tmix(1) set-ID 8
-    $tmix(1) set-cvfile $OUTBOUND_ORIG
-    $tmix(1) set-agent-type one-way
-    
     $ns_ at 0.0 "$tmix(0) start"
     $ns_ at 0.0 "$tmix(1) start"
     $ns_ at $WARMUP "$self start_tracing"
@@ -379,6 +284,9 @@ Test/Oneway-lossy-alt instproc run {} {
     $tmix(0) set-ID 7
     $tmix(0) set-cvfile $INBOUND_ALT
     $tmix(0) set-agent-type one-way
+    $tmix(0) set-TCP Newreno
+    $tmix(0) set-pkt-size 500
+    $tmix(0) set-sink DelAck   
     
     set tmix(1) [new Tmix]
     $tmix(1) set-init $node_(k2);
@@ -386,57 +294,10 @@ Test/Oneway-lossy-alt instproc run {} {
     $tmix(1) set-ID 8
     $tmix(1) set-cvfile $OUTBOUND_ALT
     $tmix(1) set-agent-type one-way
+    $tmix(1) set-TCP Newreno
+    $tmix(1) set-pkt-size 500
+    $tmix(1) set-sink DelAck   
     
-    $ns_ at 0.0 "$tmix(0) start"
-    $ns_ at 0.0 "$tmix(1) start"
-    $ns_ at $WARMUP "$self start_tracing"
-    $ns_ at $END "$tmix(0) stop"
-    $ns_ at $END "$tmix(1) stop"
-    $ns_ at [expr $END + 1] "$ns_ halt"
-    
-    $ns_ run
-}
-
-#
-# Lossless-orig
-#
-Class Test/Oneway-lossless-orig -superclass TestSuite
-Test/Oneway-lossless-orig instproc init topo {
-    global defaultRNG
-    $self instvar net_ defNet_ test_
-    $defaultRNG seed 9999
-    set net_ $topo
-    set defNet_ DB
-    set test_ Oneway-lossless-orig
-    $self next 0
-}
-
-Test/Oneway-lossless-orig instproc run {} {
-    global INBOUND_ORIG OUTBOUND_ORIG END WARMUP
-    $self instvar ns_ node_
-    $self setup_topo
-
-    # setup Tmix-DB nodes
-    $node_(r1) set-cvfile $INBOUND_ORIG [$node_(s1) id] [$node_(k1) id]
-    $node_(r2) set-cvfile $OUTBOUND_ORIG [$node_(k2) id] [$node_(s2) id]
-    $node_(r1) set-lossless
-    $node_(r2) set-lossless
-
-    # setup Tmix nodes
-    set tmix(0) [new Tmix]
-    $tmix(0) set-init $node_(s1);
-    $tmix(0) set-acc $node_(k1);
-    $tmix(0) set-ID 7
-    $tmix(0) set-cvfile $INBOUND_ORIG
-    $tmix(0) set-agent-type one-way
-
-    set tmix(1) [new Tmix]
-    $tmix(1) set-init $node_(k2);
-    $tmix(1) set-acc $node_(s2);
-    $tmix(1) set-ID 8
-    $tmix(1) set-cvfile $OUTBOUND_ORIG
-    $tmix(1) set-agent-type one-way
-
     $ns_ at 0.0 "$tmix(0) start"
     $ns_ at 0.0 "$tmix(1) start"
     $ns_ at $WARMUP "$self start_tracing"
@@ -479,6 +340,9 @@ Test/Oneway-lossless-alt instproc run {} {
     $tmix(0) set-ID 7
     $tmix(0) set-cvfile $INBOUND_ALT
     $tmix(0) set-agent-type one-way
+    $tmix(0) set-TCP Newreno
+    $tmix(0) set-pkt-size 500
+    $tmix(0) set-sink DelAck   
 
     set tmix(1) [new Tmix]
     $tmix(1) set-init $node_(k2);

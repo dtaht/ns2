@@ -33,9 +33,7 @@
  * ACM Computer Communication Review, July 2006, Vol 36, No 3, pp. 67-76.
  *
  * Contact: Michele Weigle (mweigle@cs.odu.edu)
- * 
- * For more information on Tmix and to obtain Tmix tools and 
- * connection vectors, see http://netlab.cs.unc.edu/Tmix
+ * http://www.cs.odu.edu/inets/Tmix
  */
 
 #include "tmixAgent.h"
@@ -46,16 +44,17 @@
 #include "diffusion/diff_sink.h"
 
 
-/********************************
- * OneWayAgent
- ********************************/
-
 void TmixAgent::attachApp(Application * app) {
   agent->attachApp(app);
   dynamic_cast<TmixApp*>(app)->set_agent(agent);
 }
 
-TmixOneWayAgent::TmixOneWayAgent(Tmix * t, char* tcptype, char* sinktype) : TmixAgent(t) {
+/********************************
+ * OneWayAgent
+ ********************************/
+
+TmixOneWayAgent::TmixOneWayAgent(Tmix * t, char* tcptype, char* sinktype) : 
+	TmixAgent(t) {
   // Setup required configuration which is generally done in setup_connection 
   Tcl& tcl = Tcl::instance();
 
@@ -83,11 +82,11 @@ void TmixOneWayAgent::attachApp(Application* app) {
   dynamic_cast<TmixApp*>(app)->set_sink(sink);
 }
 
-void TmixOneWayAgent::configureTcp(Tmix* tmixInstance, int window) {
+void TmixOneWayAgent::configureTcp(Tmix* tmixInstance, int window, int mss) {
   Tcl& tcl = Tcl::instance();
 
-  tcl.evalf ("%s configure-source %s %d %d", tmixInstance->name(), agent->name(), 
-	     tmixInstance->get_total(), window);
+  tcl.evalf ("%s configure-source %s %d %d %d", tmixInstance->name(), 
+	     agent->name(), tmixInstance->get_total(), window, mss);
   tcl.evalf ("%s configure-sink %s", tmixInstance->name(), sink->name());
 }
 
@@ -96,13 +95,17 @@ void TmixOneWayAgent::reset() {
   if(TcpAgent* a = dynamic_cast<TcpAgent*>(agent)) {
     a->reset();
   }
+  if(TcpAgent* s = dynamic_cast<TcpAgent*>(sink)) {
+    s->reset();
+  }
 }
 
 void TmixOneWayAgent::connect(TmixAgent * peer) {
   Tcl& tcl = Tcl::instance();
 	
   tcl.evalf ("set ns [Simulator instance]");
-  tcl.evalf ("$ns connect %s %s", name(), (dynamic_cast<TmixOneWayAgent*>(peer))->sinkName());
+  tcl.evalf ("$ns connect %s %s", name(), 
+	     (dynamic_cast<TmixOneWayAgent*>(peer))->sinkName());
   tcl.evalf("$ns connect %s %s", peer->name(), this->sinkName());
 }
 
@@ -124,7 +127,6 @@ void TmixFullAgent::reset() {
   dynamic_cast<FullTcpAgent*>(agent)->reset();
 }
 
-// attachToNode
 void TmixFullAgent::attachToNode(Node * node) {
   Tcl& tcl = Tcl::instance();
 	
@@ -132,11 +134,12 @@ void TmixFullAgent::attachToNode(Node * node) {
 	     name());
 }
 	
-// configure tcp
-void TmixFullAgent::configureTcp(Tmix* tmixInstance, int window) {
+void TmixFullAgent::configureTcp(Tmix* tmixInstance, int window, int mss) {
   Tcl& tcl = Tcl::instance();
 		
-  tcl.evalf ("%s setup-tcp %s %d %d", tmixInstance->name(), agent->name(), tmixInstance->get_total(), window);
+  // note that for fulltcp init_mss == acc_mss
+  tcl.evalf ("%s setup-tcp %s %d %d %d", tmixInstance->name(), agent->name(), 
+	     tmixInstance->get_total(), window, mss);
 }
 
 void TmixFullAgent::connect(TmixAgent * peer) {

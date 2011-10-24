@@ -37,7 +37,7 @@
  * this exception also makes it possible to release a modified version
  * which carries forward this exception.
  *
- * $Header: /cvsroot/nsnam/ns-2/webcache/pagepool.cc,v 1.17 2006/02/21 15:20:20 mahrenho Exp $
+ * $Header: /cvsroot/nsnam/ns-2/webcache/pagepool.cc,v 1.19 2011/10/06 00:23:38 tom_henderson Exp $
  */
 
 #include <stdlib.h>
@@ -634,7 +634,7 @@ public:
 ClientPagePool::ClientPagePool()
 {
 	namemap_ = new Tcl_HashTable;
-	Tcl_InitHashTable(namemap_, 2);
+	Tcl_InitHashTable(namemap_, TCL_STRING_KEYS);
 }
 
 ClientPagePool::~ClientPagePool()
@@ -658,8 +658,10 @@ int ClientPagePool::command(int argc, const char*const* argv)
 			for (he = Tcl_FirstHashEntry(namemap_, &hs); 
 			     he != NULL;
 			     he = Tcl_NextHashEntry(&hs)) {
-				int* t2 = (int*)Tcl_GetHashKey(namemap_, he);
-				PageID t1(t2);
+				char* retVal = Tcl_GetHashKey(namemap_, he);
+				// Convert name to a PageID
+				PageID t1;
+				ClientPage::split_name (retVal, t1);
 #ifdef NEED_SUNOS_PROTOS
 				sprintf(p, "%s:%-d ", t1.s_->name(),t1.id_);
 				p += strlen(p);
@@ -680,7 +682,7 @@ ClientPage* ClientPagePool::get_page(const char *name)
 	PageID t1;
 	ClientPage::split_name(name, t1);
 
-	Tcl_HashEntry *he = Tcl_FindHashEntry(namemap_, (const char *)&t1);
+	Tcl_HashEntry *he = Tcl_FindHashEntry(namemap_, name);
 	if (he == NULL)
 		return NULL;
 	return (ClientPage *)Tcl_GetHashValue(he);
@@ -763,14 +765,12 @@ int ClientPagePool::add_page(ClientPage* pg)
 		return -1;
 
 	char buf[HTTP_MAXURLLEN];
+	memset (buf, 0, sizeof(buf));
 	pg->name(buf);
-
-	PageID t1;
-	ClientPage::split_name(buf, t1);
 
 	int newEntry = 1;
 	Tcl_HashEntry *he = Tcl_CreateHashEntry(namemap_, 
-						(const char *)&t1,
+						buf,
 						&newEntry);
 	if (he == NULL)
 		return -1;
@@ -796,11 +796,8 @@ int ClientPagePool::add_page(ClientPage* pg)
 
 int ClientPagePool::remove_page(const char *name)
 {
-	PageID t1;
-	ClientPage::split_name(name, t1);
-
 	// Find out which client we are seeking
-	Tcl_HashEntry *he = Tcl_FindHashEntry(namemap_, (const char *)&t1);
+	Tcl_HashEntry *he = Tcl_FindHashEntry(namemap_, name);
 	if (he == NULL)
 		return -1;
 	ClientPage *pg = (ClientPage *)Tcl_GetHashValue(he);

@@ -57,7 +57,7 @@
 
 #ifndef lint
 static const char rcsid[] =
-     "@(#) $Header: /cvsroot/nsnam/ns-2/queue/red.cc,v 1.89 2010/03/08 05:54:53 tom_henderson Exp $ (LBL)";
+     "@(#) $Header: /cvsroot/nsnam/ns-2/queue/red.cc,v 1.90 2011/10/02 22:32:34 tom_henderson Exp $ (LBL)";
 #endif
 
 #include <math.h>
@@ -385,13 +385,12 @@ void REDQueue::updateMaxP(double new_ave, double now)
  */
 double REDQueue::estimator(int nqueued, int m, double ave, double q_w)
 {
-	double new_ave, old_ave;
+	double new_ave;
 
 	new_ave = ave;
 	while (--m >= 1) {
 		new_ave *= 1.0 - q_w;
 	}
-	old_ave = new_ave;
 	new_ave *= 1.0 - q_w;
 	new_ave += q_w * nqueued;
 	
@@ -951,17 +950,19 @@ void REDQueue::print_summarystats()
  */
 void REDQueue::run_estimator(int nqueued, int m)
 {
-	double f, f_sl, f_old;
+	double f, f_sl;
 
 	f = edv_.v_ave;
 	f_sl = edv_.v_slope;
 #define RED_EWMA
 #ifdef RED_EWMA
 	while (--m >= 1) {
-		f_old = f;
 		f *= 1.0 - edp_.q_w;
 	}
+#ifdef RED_HOLT_WINTERS
+	double f_old;
 	f_old = f;
+#endif
 	f *= 1.0 - edp_.q_w;
 	f += edp_.q_w * nqueued;
 #endif

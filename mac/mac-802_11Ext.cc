@@ -685,12 +685,11 @@ void Mac802_11Ext::recv(Packet *p, Handler *h) {
 //------------------------------------------------------------------------//
 void Mac802_11Ext::recvDATA(Packet *p) {
 	struct hdr_mac802_11 *dh = HDR_MAC802_11(p);
-	u_int32_t dst, src, size;
+	u_int32_t dst, src;
 
 	struct hdr_cmn *ch = HDR_CMN(p);
 	dst = ETHER_ADDR(dh->dh_ra);
 	src = ETHER_ADDR(dh->dh_ta);
-	size = ch->size();
 	ch->size() -= phymib_.getHdrLen11();
 	ch->num_forwards() += 1;
 

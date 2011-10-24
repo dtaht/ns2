@@ -36,7 +36,7 @@
 
 #ifndef lint
 static const char rcsid[] =
-    "@(#) $Header: /cvsroot/nsnam/ns-2/satellite/sattrace.cc,v 1.16 2005/09/21 20:54:21 haldar Exp $";
+    "@(#) $Header: /cvsroot/nsnam/ns-2/satellite/sattrace.cc,v 1.17 2011/10/02 22:32:34 tom_henderson Exp $";
 #endif
 
 #include <stdio.h>
@@ -279,9 +279,6 @@ void SatTrace::format(int tt, int s, int d, Packet* p)
 	}
 
 	if (show_sctphdr_ && t == PT_SCTP) {
-	   double timestamp;
-	   timestamp = Scheduler::instance().clock();
-	   
 	   for(unsigned int i = 0; i < sctph->NumChunks(); i++) {
 		   switch(sctph->SctpTrace()[i].eType) {
 			case SCTP_CHUNK_INIT:

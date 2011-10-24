@@ -30,7 +30,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * @(#) $Header: /cvsroot/nsnam/ns-2/tcp/tcp.h,v 1.131 2010/04/02 19:58:25 tom_henderson Exp $ (LBL)
+ * @(#) $Header: /cvsroot/nsnam/ns-2/tcp/tcp.h,v 1.132 2011/08/26 19:29:57 tom_henderson Exp $ (LBL)
  */
 #ifndef ns_tcp_h
 #define ns_tcp_h
@@ -186,6 +186,10 @@ public:
 	virtual void advanceby(int delta);
 
 	virtual void reset();
+
+	/* These two functions aid Tmix one-way TCP agents */
+	int is_closed() {return closed_;} 
+	void clr_closed() {closed_ = 0;}
 protected:
 	virtual int window();
 	virtual double windowd();

@@ -3,7 +3,7 @@
 // author         : Fabio Silva
 //
 // Copyright (C) 2000-2003 by the University of Southern California
-// $Id: gear_sender.cc,v 1.6 2010/03/08 05:54:49 tom_henderson Exp $
+// $Id: gear_sender.cc,v 1.7 2011/10/02 22:32:34 tom_henderson Exp $
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License,
@@ -59,7 +59,6 @@ void GearSendDataTimer::expire(Event *) {
 void GearSenderApp::send()
 {
   struct timeval tmv;
-  int retval;
   
   // Send data if we have active subscriptions
   if ((num_subscriptions_ > 0) || using_push_)
@@ -71,7 +70,7 @@ void GearSenderApp::send()
       
       // Send data probe
       DiffPrint(DEBUG_ALWAYS, "Node%d: Sending Data %d\n", ((DiffusionRouting *)dr_)->getNodeId(), last_seq_sent_);
-      retval = dr_->send(pubHandle_, &data_attr_);
+      dr_->send(pubHandle_, &data_attr_);
       
       // Update counter
       last_seq_sent_++;

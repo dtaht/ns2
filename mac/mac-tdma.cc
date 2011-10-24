@@ -3,7 +3,7 @@
 /*
  * mac-tdma.cc
  * Copyright (C) 1999 by the University of Southern California
- * $Id: mac-tdma.cc,v 1.17 2010/03/08 05:54:52 tom_henderson Exp $
+ * $Id: mac-tdma.cc,v 1.18 2011/10/02 22:32:34 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -46,7 +46,7 @@
  */
 
 //
-// $Header: /cvsroot/nsnam/ns-2/mac/mac-tdma.cc,v 1.17 2010/03/08 05:54:52 tom_henderson Exp $
+// $Header: /cvsroot/nsnam/ns-2/mac/mac-tdma.cc,v 1.18 2011/10/02 22:32:34 tom_henderson Exp $
 //
 // mac-tdma.cc
 // by Xuan Chen (xuanc@isi.edu), ISI/USC
@@ -394,8 +394,6 @@ void MacTdma::recvDATA(Packet *p){
 /* Send packet down to the physical layer. 
    Need to calculate a certain time slot for transmission. */
 void MacTdma::sendDown(Packet* p) {
-	u_int32_t dst, src, size;
-  
 	struct hdr_cmn* ch = HDR_CMN(p);
 	struct hdr_mac_tdma* dh = HDR_MAC_TDMA(p);
 
@@ -420,10 +418,6 @@ void MacTdma::sendDown(Packet* p) {
 	else
 		dh->dh_duration = 0;
 
-	dst = ETHER_ADDR(dh->dh_da);
-	src = ETHER_ADDR(dh->dh_sa);
-	size = ch->size();
-
 	/* buffer the packet to be sent. */
 	pktTx_ = p;
 }
@@ -431,9 +425,7 @@ void MacTdma::sendDown(Packet* p) {
 /* Actually send the packet. */
 void MacTdma::send() 
 {
-	u_int32_t dst, src, size;
 	struct hdr_cmn* ch;
-	struct hdr_mac_tdma* dh;
 	double stime;
 
 	/* Check if there is any packet buffered. */
@@ -452,11 +444,7 @@ void MacTdma::send()
 	}
 
 	ch = HDR_CMN(pktTx_);
-	dh = HDR_MAC_TDMA(pktTx_);  
 
-	dst = ETHER_ADDR(dh->dh_da);
-	src = ETHER_ADDR(dh->dh_sa);
-	size = ch->size();
 	stime = TX_Time(pktTx_);
 	ch->txtime() = stime;
 	
@@ -570,8 +558,7 @@ void MacTdma::slotHandler(Event *e)
 
 void MacTdma::recvHandler(Event *) 
 {
-	u_int32_t dst, src; 
-	int size;
+	u_int32_t dst;
 	struct hdr_cmn *ch = HDR_CMN(pktRx_);
 	struct hdr_mac_tdma *dh = HDR_MAC_TDMA(pktRx_);
 
@@ -583,10 +570,6 @@ void MacTdma::recvHandler(Event *)
   
 	/* check if this packet was unicast and not intended for me, drop it.*/   
 	dst = ETHER_ADDR(dh->dh_da);
-	src = ETHER_ADDR(dh->dh_sa);
-	size = ch->size();
-
-	//printf("<%d>, %f, recv a packet [from %d to %d], size = %d\n", index_, NOW, src, dst, size);
 
 	// Turn the radio off after receiving the whole packet
 	radioSwitch(OFF);

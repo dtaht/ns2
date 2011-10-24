@@ -2,7 +2,7 @@
 /*
  * diffusion.cc
  * Copyright (C) 2000 by the University of Southern California
- * $Id: diffusion.cc,v 1.14 2006/03/10 12:25:28 mahrenho Exp $
+ * $Id: diffusion.cc,v 1.15 2011/10/02 22:32:34 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -44,7 +44,7 @@
  */
 
 //
-// $Header: /cvsroot/nsnam/ns-2/diffusion/diffusion.cc,v 1.14 2006/03/10 12:25:28 mahrenho Exp $
+// $Header: /cvsroot/nsnam/ns-2/diffusion/diffusion.cc,v 1.15 2011/10/02 22:32:34 tom_henderson Exp $
 
 /****************************************************************/
 /* diffusion.cc : Chalermek Intanagonwiwat (USC/ISI)  05/18/99  */
@@ -586,7 +586,6 @@ void DiffusionAgent::SendBufferCheck()
 {
   int c;
   hdr_cdiff *dfh;
-  hdr_cmn  *cmh;
   hdr_ip   *iph;
   int dtype;
   PrvCurPtr RetVal;
@@ -596,7 +595,6 @@ void DiffusionAgent::SendBufferCheck()
       continue;
     
     dfh = HDR_CDIFF(send_buf[c].p);
-    cmh = HDR_CMN(send_buf[c].p);
     iph = HDR_IP(send_buf[c].p);
     dtype = dfh->data_type;
 

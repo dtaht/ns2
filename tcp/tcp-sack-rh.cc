@@ -25,7 +25,7 @@
 
 #ifndef lint
 static const char rcsid[] =
-    "@(#) $Header: /cvsroot/nsnam/ns-2/tcp/tcp-sack-rh.cc,v 1.6 2006/02/21 15:20:20 mahrenho Exp $ (PSC-SACKRH)";
+    "@(#) $Header: /cvsroot/nsnam/ns-2/tcp/tcp-sack-rh.cc,v 1.7 2011/10/02 22:32:35 tom_henderson Exp $ (PSC-SACKRH)";
 #endif
 
 #include <stdio.h>
@@ -103,7 +103,7 @@ SackRHTcpAgent::SackRHTcpAgent() : fack_(-1),
 
 void SackRHTcpAgent::recv(Packet *pkt, Handler*)
 {
-	int old_fack, old_retran_data, old_ack, old_numdupacks;
+	int old_fack, old_retran_data, old_ack;
 	hdr_tcp *tcph = hdr_tcp::access(pkt);
 
 	int ecnecho = (hdr_flags::access(pkt)->ecnecho() && last_ack_ != -1);
@@ -129,7 +129,6 @@ void SackRHTcpAgent::recv(Packet *pkt, Handler*)
 	old_retran_data = retran_data_;
 	retran_data_ -= scb_.UpdateScoreBoard (last_ack_, tcph, rh_id_);
 
-	old_numdupacks = num_dupacks_;
        	if (!sackpresent && (old_ack == last_ack_)) {
 		num_dupacks_++;
 		if ((rh_est_hole_state_ == RHEH_COUNTING) && 

@@ -22,7 +22,6 @@ set OUTBOUND "sample-alt.cvec";   # same traffic in both directions
 remove-all-packet-headers;             # removes all packet headers
 add-packet-header IP TCP;              # adds TCP/IP headers
 set ns [new Simulator];                # instantiate the Simulator
-$ns use-scheduler Heap
 
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Setup Topology
@@ -46,6 +45,7 @@ $tmix(0) set-acc $n(1);                  # name $n(1) as acceptor
 $tmix(0) set-ID 7
 $tmix(0) set-cvfile "$INBOUND"
 $tmix(0) set-pkt-size 500
+$tmix(0) set-TCP Newreno
 
 set tmix(1) [new Tmix]
 $tmix(1) set-agent-type one-way
@@ -55,6 +55,7 @@ $tmix(1) set-acc $n(2);                  # name $n(2) as acceptor
 $tmix(1) set-ID 8
 $tmix(1) set-cvfile "$OUTBOUND"
 $tmix(1) set-pkt-size 500
+$tmix(1) set-TCP Newreno
 
 #
 # Setup tmixDelayBox
@@ -85,6 +86,19 @@ $ns queue-limit $tmixNet(1) $n(1) 500
 $ns queue-limit $n(1) $tmixNet(1) 500
 $ns queue-limit $tmixNet(1) $n(3) 500
 $ns queue-limit $n(3) $tmixNet(1) 500
+
+# setup tracing
+set qmonf [open "|gzip > tmix-oneway-trace.trq.gz" w]
+$ns trace-queue $n(0) $tmixNet(0) $qmonf
+$ns trace-queue $tmixNet(1) $n(1) $qmonf
+$ns trace-queue $tmixNet(0) $n(0) $qmonf
+$ns trace-queue $n(1) $tmixNet(1) $qmonf
+$ns trace-queue $tmixNet(0) $tmixNet(1) $qmonf
+$ns trace-queue $tmixNet(1) $tmixNet(0) $qmonf
+$ns trace-queue $n(2) $tmixNet(0) $qmonf
+$ns trace-queue $tmixNet(1) $n(3) $qmonf
+$ns trace-queue $tmixNet(0) $n(2) $qmonf
+$ns trace-queue $n(3) $tmixNet(1) $qmonf
 
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 # Simulation Schedule

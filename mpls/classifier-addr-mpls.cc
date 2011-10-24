@@ -3,7 +3,7 @@
 /*
  * classifier-addr-mpls.cc
  * Copyright (C) 2000 by the University of Southern California
- * $Id: classifier-addr-mpls.cc,v 1.8 2010/03/08 05:54:52 tom_henderson Exp $
+ * $Id: classifier-addr-mpls.cc,v 1.9 2011/10/02 22:32:34 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -48,7 +48,7 @@
 //
 // Original source contributed by Gaeil Ahn. See below.
 //
-// $Header: /cvsroot/nsnam/ns-2/mpls/classifier-addr-mpls.cc,v 1.8 2010/03/08 05:54:52 tom_henderson Exp $
+// $Header: /cvsroot/nsnam/ns-2/mpls/classifier-addr-mpls.cc,v 1.9 2011/10/02 22:32:34 tom_henderson Exp $
 
 // XXX
 //
@@ -525,14 +525,13 @@ int MPLSAddressClassifier::command(int argc, const char*const* argv)
 				tcl.result("-1");
 			return (TCL_OK);
 		}
-		int PFTnb = -1;
 		int LIBptr = -1;
 		int iLabel, oLabel, iIface, oIface;
 		int fec   = atoi(argv[2]);
 		int LSPid = atoi(argv[3]);
 		int PHB   = LSPid;
 		if (LSPid < 0)     // topology-based LSP
-			PFTnb = PFTlocate(fec,PHB, LIBptr);
+			PFTlocate(fec,PHB, LIBptr);
 		else               // ER-LSP
 			ERBlocate(LSPid,fec, LIBptr);
 

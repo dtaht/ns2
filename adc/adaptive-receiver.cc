@@ -41,7 +41,7 @@
 
 #ifndef lint
 static const char rcsid[] =
-	"@(#) $Header: /cvsroot/nsnam/ns-2/adc/adaptive-receiver.cc,v 1.8 2005/08/26 05:05:27 tomh Exp $";
+	"@(#) $Header: /cvsroot/nsnam/ns-2/adc/adaptive-receiver.cc,v 1.9 2011/10/02 22:32:34 tom_henderson Exp $";
 #endif
 
 #include "config.h"
@@ -65,11 +65,8 @@ AdaptiveRcvr::AdaptiveRcvr() : Agent(PT_NTYPE)
 void AdaptiveRcvr::recv(Packet *pkt,Handler*)
 {
 	int delay;
-	int seq_no;
 	hdr_cmn* ch= hdr_cmn::access(pkt);
-	hdr_rtp *rh = hdr_rtp::access(pkt);
 	
-	seq_no= rh->seqno();
 	register u_int32_t send_time = (int)ch->timestamp();
 	
 	u_int32_t local_time= (u_int32_t)(Scheduler::instance().clock() * SAMPLERATE);

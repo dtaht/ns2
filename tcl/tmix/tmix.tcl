@@ -54,11 +54,11 @@ Tmix instproc configure-sink {sink} {
     $sink set packetSize_ 40
 }
 
-Tmix instproc configure-source {agent fid wnd} {
+Tmix instproc configure-source {agent fid wnd mss} {
     # set flow ID, max window, and packet size
     $agent set fid_ $fid
     $agent set window_ $wnd
-    $agent set packetSize_ 500
+    $agent set packetSize_ $mss
 }
 
 #
@@ -75,10 +75,11 @@ Tmix instproc alloc-tcp {tcptype} {
     }
 }
 
-Tmix instproc setup-tcp {tcp fid wnd} {
+Tmix instproc setup-tcp {tcp fid wnd mss} {
     # set flow ID and max window
     $tcp set fid_ $fid
     $tcp set window_ $wnd
+    $tcp set segsize_ $mss
 
     # register done procedure for when connection is closed
     $tcp proc done {} "$self done $tcp"

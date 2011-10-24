@@ -33,6 +33,7 @@
  * ACM Computer Communication Review, July 2006, Vol 36, No 3, pp. 67-76.
  *
  * Contact: Michele Weigle (mweigle@cs.odu.edu)
+ * http://www.cs.odu.edu/inets/Tmix
  */
 
 #include "delaybox/delaybox.h"  // uses some DelayBox structures and functions

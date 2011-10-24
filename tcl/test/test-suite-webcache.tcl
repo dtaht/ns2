@@ -5,7 +5,7 @@
 # we build this functionality based on byte-stream model of underlying 
 # TCP connection.
 # 
-# $Header: /cvsroot/nsnam/ns-2/tcl/test/test-suite-webcache.tcl,v 1.25 2006/01/24 23:00:08 sallyfloyd Exp $
+# $Header: /cvsroot/nsnam/ns-2/tcl/test/test-suite-webcache.tcl,v 1.26 2011/10/02 22:31:14 tom_henderson Exp $
 
 #----------------------------------------------------------------------
 # Related Files
@@ -1717,6 +1717,7 @@ Test/Mcast-PB instproc collect-stat {} {
 
 	set sn 0
 	set gn 0
+	set sr 0
 	set st(max) 0
 	set st(min) 98765432
 	set st(avg) 0
@@ -1747,11 +1748,17 @@ Test/Mcast-PB instproc collect-stat {} {
 		set rt(max) 0
 		set rt(min) 0
 	}
-	set sr [expr double($sn) / $gn * 100]
-	if {$sn == 0 || [catch {set st(avg) [expr double($st(avg)) / $sn]}]} {
-		set st(avg) 0	;# No stale hits
-	} 
-	set rt(avg) [expr double($rt(avg)) / $gn]
+	if {$gn > 0} {
+		set sr [expr double($sn) / $gn * 100]
+	}
+	if {$sn > 0} {
+		if [catch {set st(avg) [expr double($st(avg)) / $sn]}] {
+			set st(avg) 0	;# No stale hits
+		} 
+	}
+	if {$gn > 0} {
+		set rt(avg) [expr double($rt(avg)) / $gn]
+	}
 
 	set ims 0
 	foreach c [array names cache_] {
@@ -2117,11 +2124,17 @@ Test-dreq instproc collect-stat {} {
 		set st [expr $st + [$client_($c) stat stale-time]]
 		set rt [expr $rt + [$client_($c) stat rep-time]]
 	}
-	set sr [expr double($sn) / $gn * 100]
-	if [catch {set st [expr double($st) / $sn]}] {
-		set st 0	;# No stale hits
+	if {$gn > 0} {
+		set sr [expr double($sn) / $gn * 100]
 	}
-	set rt [expr double($rt) / $gn]
+	if {$sn > 0} {
+		if [catch {set st [expr double($st) / $sn]}] {
+			set st 0	;# No stale hits
+		}
+	}
+	if {$gn > 0} {
+		set rt [expr double($rt) / $gn]
+	}
 	return [list svr_bw $svr_bw btnk_bw $btnk_bw sr $sr st $st rt $rt]
 }
 
