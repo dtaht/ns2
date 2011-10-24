@@ -15,7 +15,7 @@ Package: ns2
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: gnuplot
-Description: a discrete event simulator targeted at networking research
+Description: Discrete event simulator targeted at networking research
  Provides substantial support for simulation of TCP, routing, 
  and multicast protocols over wired and wireless (local and satellite) 
  networks.
