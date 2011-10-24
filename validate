@@ -19,7 +19,7 @@
 # WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 #
-# $Header: /cvsroot/nsnam/ns-2/validate,v 1.153 2009/11/21 21:12:48 tom_henderson Exp $
+# $Header: /cvsroot/nsnam/ns-2/validate,v 1.155 2011/10/24 03:52:55 tom_henderson Exp $
 
 try () {
         for excluding in $cygwin_exclude; do
@@ -80,33 +80,14 @@ source-routing satellite \
 misc tagged-trace message rng xcp wpan \
 energy snoop \
 packmime delaybox tmix \
-# wireless-lan-gaf
-
-# Validation tests that still use full packet headers:
-# wireless-shadowing wireless-lan-aodv wireless-tdma wireless-gridkeeper
-# wireless-diffusion wireless-lan-newnode satellite WLtutorial energy
+srm smac-multihop hier-routing algo-routing mcast vc session mixmode \
+simultaneous webcache mcache plm wireless-tdma  \
+# The below tests have output inconsistent with stored traces, and
+# need to be re-validated
+# pushback wireless-lan-gaf \
 
 # Deleted (old tests that were for compatibility with ns-1 scripts):
 # v1 red-v1 cbq-v1 sack-v1 vegas-v1
-
-do
-	date
-	try ./test-all-$i
-	date
-	sleep 2
-done
-
-#
-# Repeat for non-portable test set
-#
-any_portable_failed=$any_failed
-any_failed=false
-portable_failed_list=$failed_list
-failed_list=""
-
-for i in \
-srm smac-multihop hier-routing algo-routing mcast vc session mixmode \
-simultaneous webcache mcache plm wireless-tdma 
 
 do
 	date
@@ -120,35 +101,13 @@ echo "    warning: using backward compatibility mode"
 echo "    This test is not implemented in backward compatibility mode"
 echo
 
-if $any_portable_failed
-then
-    	echo
-	echo "validate overall report: some portable tests failed:"
-	echo "    $portable_failed_list"
-        if $any_failed
-        then
-	    echo "some non-portable tests also failed:"
-	    echo "    $failed_list"
-        fi
-	echo "to re-run a specific test, cd tcl/test; ./test-all-TEST-NAME"
-	exit 1
-fi
-        
 if $any_failed
 then
     	echo
-	echo "validate overall report: all portable tests passed but"
-	echo "some non-portable tests failed:"
+	echo "validate overall report: some tests failed:"
 	echo "    $failed_list"
 	echo "to re-run a specific test, cd tcl/test; ./test-all-TEST-NAME"
         echo ""
-	echo "Note that the non-portable test list includes files that"
-        echo "are known to pass on Linux x86 machines but that are known"
-        echo "to have some portability problems to other platforms or"
-        echo "operating systems.   Failure of one of these tests does not"
-        echo "necessarily mean that one will encounter a problem in your"
-        echo "simulations, but that one must be careful of using that"
-        echo "specific model on the system on which the validate was run."
         if  [ "${test_cygwin}" = "true" ]; then
                 cmaj=` uname -r | sed -e 's/^\([0-9]*\)\.\([0-9]*\).\([0-9]*\).*/\1/'`;
                 echo $cmaj | grep -v [0-9] >/dev/null 2>&1

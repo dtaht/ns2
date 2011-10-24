@@ -31,7 +31,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * @(#) $Header: /cvsroot/nsnam/ns-2/common/agent.h,v 1.37 2010/03/08 05:54:49 tom_henderson Exp $ (LBL)
+ * @(#) $Header: /cvsroot/nsnam/ns-2/common/agent.h,v 1.38 2011/08/26 19:26:39 tom_henderson Exp $ (LBL)
  */
 
 #ifndef ns_agent_h
@@ -76,6 +76,10 @@ class Agent : public Connector {
 	
 	//added for edrop tracing - ratul
 	void recvOnly(Packet *) {};
+
+	/* These two functions aid Tmix one-way TCP agents */
+	virtual int is_closed() {return 0;} 
+	virtual void clr_closed() {}
 
 	void send(Packet* p, Handler* h) { target_->recv(p, h); }
 	virtual void timeout(int tno);

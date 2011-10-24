@@ -3,7 +3,7 @@
 // authors         : Fred Stann
 //
 // Copyright (C) 2003 by the University of Southern California
-// $Id: rmst_source.cc,v 1.5 2010/03/08 05:54:49 tom_henderson Exp $
+// $Id: rmst_source.cc,v 1.6 2011/10/02 22:32:34 tom_henderson Exp $
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License,
@@ -261,14 +261,13 @@ char* RmstSource::createBlob (int ck_val)
 
 void RmstSource::sendBlob() {
   char *blob;
-  int retval;
   NRAttrVec src_attrs;
 
   // Retrieve rmsb from the local cache to get pointer to it.
   blob = createBlob(ck_val_);
   ck_val_++;
   src_attrs.push_back(RmstDataAttr.make(NRAttribute::IS, blob, 2500));
-  retval = ((DiffusionRouting *)dr_)->sendRmst(send_handle_,
+  ((DiffusionRouting *)dr_)->sendRmst(send_handle_,
 					       &src_attrs, PAYLOAD_SIZE);
   blobs_to_send_--;
   delete blob;

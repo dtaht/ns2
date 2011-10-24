@@ -45,7 +45,7 @@
 
 #ifndef lint
 static const char rcsid[] =
-"@(#) $Header: /cvsroot/nsnam/ns-2/sctp/sctp-multipleFastRtx.cc,v 1.5 2009/11/16 05:51:27 tom_henderson Exp $ (UD/PEL)";
+"@(#) $Header: /cvsroot/nsnam/ns-2/sctp/sctp-multipleFastRtx.cc,v 1.6 2011/10/02 22:32:34 tom_henderson Exp $ (UD/PEL)";
 #endif
 
 #include "ip.h"
@@ -536,7 +536,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
   /* NE: let's decide which block (Gap Ack or Non-Renegable Gap Ack) 
      is used for the calculation */
   Boolean_E eUseGapAckBlock = FALSE;
-  Boolean_E eUseNonRenegGapAckBlock = FALSE;
   u_int uiGapAckStartTsn;
   u_int uiNonRenegGapAckStartTsn;
 
@@ -572,7 +571,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
     if ((usNumGapAckBlocks == 0) && (usNumNonRenegGapAckBlocks > 0)) {
       spCurrGapAck = spCurrNonRenegGapAck; 
       
-      eUseNonRenegGapAckBlock = TRUE;
       eUseGapAckBlock = FALSE;
       
       uiNonRenegGapAckStartTsn = 
@@ -583,7 +581,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
     } /* NE: if there is no reported Non-Renegable Gap Ack Blocks, 
 	 just use Gap Ack Blocks */
     else if (usNumNonRenegGapAckBlocks == 0 && (usNumGapAckBlocks > 0)) {
-      eUseNonRenegGapAckBlock = FALSE;
       eUseGapAckBlock = TRUE;
 
       uiGapAckStartTsn = spSackChunk->uiCumAck + spCurrGapAck->usStartOffset;
@@ -599,7 +596,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 	spSackChunk->uiCumAck + spCurrNonRenegGapAck->usStartOffset;
 
       if (uiGapAckStartTsn < uiNonRenegGapAckStartTsn) {
-	eUseNonRenegGapAckBlock = FALSE;
 	eUseGapAckBlock = TRUE;
 
 	DBG_PL(ProcessGapAckBlocks,"uiGapAckStartTsn=%u"), 
@@ -607,7 +603,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
       }
       else if (uiNonRenegGapAckStartTsn < uiGapAckStartTsn) {
 	spCurrGapAck = spCurrNonRenegGapAck; 
-	eUseNonRenegGapAckBlock = TRUE;
 	eUseGapAckBlock = FALSE;
 	
 	DBG_PL(ProcessGapAckBlocks,"uiNonRenegGapAckStartTsn=%u"), 
@@ -932,7 +927,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 			
 			spCurrGapAck = spCurrNonRenegGapAck; 
 			
-			eUseNonRenegGapAckBlock = TRUE;
 			eUseGapAckBlock = FALSE;
 
 			uiNonRenegGapAckStartTsn = 
@@ -949,7 +943,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 		      else if ((usNumNonRenegGapAckBlocks == usNumNonRenegGapAcksProcessed)
 			       && (usNumGapAckBlocks > usNumGapAcksProcessed)) {
 			
-			eUseNonRenegGapAckBlock = FALSE;
 			eUseGapAckBlock = TRUE;
 
 			uiGapAckStartTsn = 
@@ -973,7 +966,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 			
 			if (uiGapAckStartTsn < uiNonRenegGapAckStartTsn) {
 			  
-			  eUseNonRenegGapAckBlock = FALSE;
 			  eUseGapAckBlock = TRUE;
 
 			  DBG_PL(ProcessGapAckBlocks, "jump to next gap ack block") 
@@ -986,7 +978,6 @@ Boolean_E MultipleFastRtxSctpAgent::ProcessGapAckBlocks(u_char *ucpSackChunk,
 			  
 			  spCurrGapAck = spCurrNonRenegGapAck; 
 			  
-			  eUseNonRenegGapAckBlock = TRUE;
 			  eUseGapAckBlock = FALSE;
 
 			  DBG_PL(ProcessGapAckBlocks, "jump to next nr gap ack block") 

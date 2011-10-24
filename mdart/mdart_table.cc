@@ -389,7 +389,9 @@ nsaddr_t RoutingTable::getEntry(nsaddr_t dst_) {
 #endif
 	int levelSibling_ = ADDR_SIZE;
 	nsaddr_t nextHopId_ = IP_BROADCAST;
+#ifdef DEBUG_PACKET_FORWARDING
 	nsaddr_t nextHopAdd_ = IP_BROADCAST;
+#endif
 	u_int32_t hopNumber_ = INFINITO;
 	double etxMetric_ = (double) RTR_ETX_MAX;
 	if (DiffBit(mdart_->address_, dst_) <0) {
@@ -424,7 +426,9 @@ nsaddr_t RoutingTable::getEntry(nsaddr_t dst_) {
 			if ((mdart_->etxMetric_ == 1 && ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) < levelSibling_) || ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) == levelSibling_) && (*itEntry_)->etxMetric() < etxMetric_)) && !(*itEntry_)->macFailed()) || (mdart_->etxMetric_ == 0 && ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) < levelSibling_) || ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) == levelSibling_) && ((*itEntry_)->hopNumber() < hopNumber_))) && !((*itEntry_)->macFailed()))) {
 				levelSibling_ = DiffBit(dst_, (*itEntry_)->nextHopAdd());
 				nextHopId_ = (*itEntry_)->nextHopId();
+#ifdef DEBUG_PACKET_FORWARDING
 				nextHopAdd_ = (*itEntry_)->nextHopAdd();
+#endif
 				hopNumber_ = (*itEntry_)->hopNumber();
 				etxMetric_ = (*itEntry_)->etxMetric();
 #ifdef DEBUG_PACKET_FORWARDING
@@ -448,7 +452,9 @@ nsaddr_t RoutingTable::DAGetEntry(nsaddr_t dst_) {
 #endif
 	int levelSibling_ = ADDR_SIZE;
 	nsaddr_t nextHopId_ = IP_BROADCAST;
+#ifdef DEBUG_ADP
 	nsaddr_t nextHopAdd_ = IP_BROADCAST;
+#endif
 	u_int32_t hopNumber_ = INFINITO;
 	double etxMetric_ = (double) RTR_ETX_MAX;
 	if (DiffBit(mdart_->address_, dst_) <0) {
@@ -483,7 +489,9 @@ nsaddr_t RoutingTable::DAGetEntry(nsaddr_t dst_) {
 		if ((mdart_->etxMetric_ == 1 && ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) < levelSibling_) || ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) == levelSibling_) && (*itEntry_)->etxMetric() < etxMetric_)) && !(*itEntry_)->macFailed()) || (mdart_->etxMetric_ == 0 && ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) < levelSibling_) || ((DiffBit(dst_, (*itEntry_)->nextHopAdd()) == levelSibling_) && ((*itEntry_)->hopNumber() < hopNumber_))) && !((*itEntry_)->macFailed()))) {
 			levelSibling_ = DiffBit(dst_, (*itEntry_)->nextHopAdd());
 			nextHopId_ = (*itEntry_)->nextHopId();
+#ifdef DEBUG_ADP
 			nextHopAdd_ = (*itEntry_)->nextHopAdd();
+#endif
 			hopNumber_ = (*itEntry_)->hopNumber();
 			etxMetric_ = (*itEntry_)->etxMetric();
 #ifdef DEBUG_ADP

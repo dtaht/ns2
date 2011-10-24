@@ -13,7 +13,7 @@
 // File:  p802_15_4mac.cc
 // Mode:  C++; c-basic-offset:8; tab-width:8; indent-tabs-mode:t
 
-// $Header: /cvsroot/nsnam/ns-2/wpan/p802_15_4mac.cc,v 1.8 2011/06/22 04:03:26 tom_henderson Exp $
+// $Header: /cvsroot/nsnam/ns-2/wpan/p802_15_4mac.cc,v 1.9 2011/10/02 22:32:35 tom_henderson Exp $
 
 /*
  * Copyright (c) 2003-2004 Samsung Advanced Institute of Technology and
@@ -1483,12 +1483,11 @@ void Mac802_15_4::recvBeacon(Packet *p)
 void Mac802_15_4::recvAck(Packet *p)
 {
 	hdr_lrwpan *wph;
-	hdr_cmn *ch;
 	FrameCtrl frmCtrl;
 
 	wph = HDR_LRWPAN(p);
-	ch = HDR_CMN(p);
 #ifdef DEBUG802_15_4
+	hdr_cmn *ch = HDR_CMN(p);
 	fprintf(stdout,"[%s::%s][%f](node %d) M_ACK received: from = %d, SN = %d, uid = %d, mac_uid = %ld\n",__FILE__,__FUNCTION__,CURRENT_TIME,index_,p802_15_4macSA(p),wph->MHR_BDSN,ch->uid(),wph->uid);
 #endif
 	if ((!txBcnCmd)&&(!txBcnCmd2)&&(!txData))
@@ -1791,21 +1790,19 @@ void Mac802_15_4::txHandler(void)
 	assert(txBcnCmd||txBcnCmd2||txData);
 
 	Packet *p;
-	hdr_lrwpan* wph;
-	hdr_cmn* ch;
 	UINT_8 t_numRetry;
 
 	if (txBcnCmd) p = txBcnCmd;
 	else if (txBcnCmd2) p = txBcnCmd2;
 	else p = txData;
-	wph = HDR_LRWPAN(p);
-	ch = HDR_CMN(p);
 
 	if (txBcnCmd) t_numRetry = numBcnCmdRetry;
 	else if (txBcnCmd2) t_numRetry = numBcnCmdRetry2;
 	else t_numRetry = numDataRetry;
 	t_numRetry++;
 #ifdef DEBUG802_15_4
+	hdr_lrwpan* wph = HDR_LRWPAN(p);
+	hdr_cmn* ch = HDR_CMN(p);
 	if (t_numRetry <= aMaxFrameRetries)
 		fprintf(stdout,"[%s::%s][%f](node %d) No ACK - retransmitting: type = %s, src = %d, dst = %d, uid = %d, mac_uid = %ld, size = %d\n",__FILE__,__FUNCTION__,CURRENT_TIME,index_,wpan_pName(p),p802_15_4macSA(p),p802_15_4macDA(p),ch->uid(),wph->uid,ch->size());
 	else
@@ -4539,7 +4536,7 @@ int Mac802_15_4::getBattLifeExtSlotNum(void)
 
 double Mac802_15_4::getCAP(bool small)
 {
-	double bcnTxTime,bcnRxTime,bcnOtherRxTime,bPeriod;
+	double bcnTxTime,bcnRxTime,bcnOtherRxTime;
 	double sSlotDuration,sSlotDuration2,sSlotDuration3,BI2,BI3,t_CAP,t_CAP2,t_CAP3;
 	double now,oneDay,tmpf;
 
@@ -4553,7 +4550,6 @@ double Mac802_15_4::getCAP(bool small)
 	bcnTxTime = macBcnTxTime / phy->getRate('s');
 	bcnRxTime = macBcnRxTime / phy->getRate('s');
 	bcnOtherRxTime = macBcnOtherRxTime / phy->getRate('s');
-	bPeriod = aUnitBackoffPeriod / phy->getRate('s');
 	sSlotDuration = sfSpec.sd / phy->getRate('s');
 	sSlotDuration2 = sfSpec2.sd / phy->getRate('s');
 	sSlotDuration3 = sfSpec3.sd / phy->getRate('s');
@@ -4672,7 +4668,7 @@ double Mac802_15_4::getCAP(bool small)
 
 double Mac802_15_4::getCAPbyType(int type)
 {
-	double bcnTxTime,bcnRxTime,bcnOtherRxTime,bPeriod;
+	double bcnTxTime,bcnRxTime,bcnOtherRxTime;
 	double sSlotDuration,sSlotDuration2,sSlotDuration3,BI2,BI3,t_CAP,t_CAP2,t_CAP3;
 	double now,oneDay,tmpf;
 
@@ -4686,7 +4682,6 @@ double Mac802_15_4::getCAPbyType(int type)
 	bcnTxTime = macBcnTxTime / phy->getRate('s');
 	bcnRxTime = macBcnRxTime / phy->getRate('s');
 	bcnOtherRxTime = macBcnOtherRxTime / phy->getRate('s');
-	bPeriod = aUnitBackoffPeriod / phy->getRate('s');
 	sSlotDuration = sfSpec.sd / phy->getRate('s');
 	sSlotDuration2 = sfSpec2.sd / phy->getRate('s');
 	sSlotDuration3 = sfSpec3.sd / phy->getRate('s');

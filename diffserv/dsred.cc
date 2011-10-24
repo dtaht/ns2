@@ -216,8 +216,6 @@ void dsREDQueue::enque(Packet* pkt) {
 Packet* dsREDQueue::deque() {
   Packet *p = NULL;
   int queue, prec;
-  hdr_ip* iph;
-  int fid;
   int dq_id;
 
   // Select queue to deque under the scheduling scheme specified.
@@ -228,8 +226,6 @@ Packet* dsREDQueue::deque() {
     p = redq_[dq_id].deque();
   
   if (p) { 
-    iph= hdr_ip::access(p);
-    fid = iph->flowid()/32;
     pktcount[dq_id]+=1;
     
     // update the average rate for pri-queue

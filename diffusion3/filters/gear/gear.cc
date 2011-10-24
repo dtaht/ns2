@@ -4,7 +4,7 @@
 //
 // Copyright (C) 2000-2003 by the University of Southern California
 // Copyright (C) 2000-2003 by the University of California
-// $Id: gear.cc,v 1.6 2005/09/13 04:53:48 tomh Exp $
+// $Id: gear.cc,v 1.7 2011/10/02 22:32:34 tom_henderson Exp $
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License,
@@ -1155,7 +1155,7 @@ int32_t GeoRoutingFilter::findNextHop(GeoHeader *geo_header, bool greedy)
   NeighborEntry *neighbor_entry;
   GeoLocation destination, min_neighbor_location;
   double current_learned_cost, min_learned_cost;
-  double current_distance, min_distance;
+  double current_distance;
   double distance, gap;
   int32_t min_cost_id, neighbor_id;
   int num_neighbors;
@@ -1167,7 +1167,6 @@ int32_t GeoRoutingFilter::findNextHop(GeoHeader *geo_header, bool greedy)
   current_distance = Distance(geo_longitude_, geo_latitude_,
 			      destination.longitude_, destination.latitude_);
 
-  min_distance = MAX_INT;
   min_learned_cost = MAX_INT;
   num_neighbors = 0;
 

@@ -10,11 +10,13 @@ Connection vectors are represented through a pattern of application data units (
 
 The Tmix module in ns-2 takes a set of connection vectors and emulates the socket-level behavior of the source application that created the corresponding connection in the trace. This emulation faithfully reproduces the essential pattern of socket reads and writes that the original application performed without knowledge of what the original application actually was. When combined with Tmix\_DelayBox (Section \ref{sec:tmix-db}), the resulting traffic generated in the simulation is statistically representative of the traffic measured on the real link. All a user needs to replay traffic from a certain link is the file of \emph{a-b-t} style connection vectors obtained from a trace of that link and this Tmix generator. This approach to synthetic traffic generation allows one to automatically reproduce in ns-2 the full range of TCP connections found on an arbitrary link.
 
+Tmix supports both Full-TCP and one-way TCP agents (see the {\tt set-agent-type} command).
+
 The remainder of this chapter describes the implementation and use of Tmix in ns-2.  For more details on the \emph{a-b-t} model and validation of the Tmix generator, see \cite{weigle-ccr06}.
 
 \textbf{Citation Request:}  If you use Tmix traffic generation in your work, please cite \cite{weigle-ccr06} (M.C. Weigle, P. Adurthi, F. Hernandez-Campos, K. Jeffay, and F.D. Smith, ``Tmix: A Tool for Generating Realistic Application Workloads in ns-2'', \emph{ACM SIGCOMM Computer Communication Review}, July 2006, Vol 36, No 3, pp. 67-76.).
 
-\textbf{Note:} For more information on Tmix and to obtain Tmix tools and connection vectors, see http://netlab.cs.unc.edu/Tmix.
+\textbf{Note:} For more information on Tmix and to obtain Tmix tools and connection vectors, see http://netlab.cs.unc.edu/Tmix or http://www.cs.odu.edu/inets/Tmix.
 
 \section{Network Setup}
 
@@ -24,7 +26,7 @@ Tmix instance consists of four ns nodes: two initiator nodes and two
 acceptor nodes (Figure \ref{fig:tmix}).  
 \begin{figure}
 \centering
-\includegraphics[scale=0.5, angle=270, clip]{tmix-fig.eps}
+\includegraphics[scale=0.5, angle=270, clip]{figures/tmix-fig.eps}
 \label{fig:tmix}
 \caption{Tmix Architecture. Each Tmix object controls
 an initiator cloud and an acceptor cloud.  Each cloud can represent
@@ -286,19 +288,21 @@ arrival times found in the connection vector file, without regard to the
 completion of previous connections.
 
 Tmix handles the re-use of applications and Agents that have
-completed their data transfer. There are 5 pools used to maintain
+completed their data transfer. Each Tmix instance maintains 3 pools to manage
 applications and Agents -- one pool for inactive TCP Agents and one
-pool each for active and inactive Tmix Application. The
-pools for active applications ensure that all active applications are
+pool each for active and inactive Tmix applications. The
+pool for active applications ensures that all active applications are
 destroyed when the simulation is finished. Active TCP Agents do not
 need to be placed in a pool because each active application contains a
 pointer to its associated TCP Agent. New objects are only created when
-there are no Agents or applications available in the inactive pools. 
+there are no Agents or applications available in the inactive pools.  (TCP 
+Agents are required to be in the inactive pool for 1 second before they can 
+be re-used.)
 
 \subsection{Tmix Application}
 
-There is only one Tmix Application class.  This class is responsible for
-handling both the initiator and acceptor roles, although different instances
+The Tmix Application class ({\tt TmixApp}) is responsible for
+handling both the initiator and acceptor roles.  Different instances
 of this class are used for each role, \emph{i.e.}, one object does
 not handle both the initiator and acceptor roles at the same time.
 
@@ -306,42 +310,6 @@ The behavior of the Tmix Application class is in large part controlled by
 the connection vectors found in the connection vector file set by
 the user.  Each connection vector specifies the data to be sent by the initiator
 and acceptor applications and under what conditions that data should be sent.
-
-% \subsection{Tmix Application - Initiator}
-
-% A Tmix Application in the role of the initiator generates TCP traffic by
-% taking the following actions:
-
-% \begin{itemize}
-% \item{connect to the acceptor application associated with this application}
-% \item{if the connection is sequential, new data is scheduled to be sent every
-% time some new data is received}
-% \item{if the connection is concurrent, new data is scheduled to be sent after
-% the previous send by the same application}
-% \item{once both applications have finished sending their data, close the
-% connection}
-% \end{itemize}
-
-% Details on how data is sent for sequential and concurrent connections can be 
-% found immediately following the next section.
-
-% \subsection{Tmix Application - Acceptor}
-
-% A Tmix Application in the role of the acceptor generates TCP traffic by
-% taking the following actions:
-
-% \begin{itemize}
-% \item{listen for a connection from the associated initiator application}
-% \item{if the connection is sequential, new data is scheduled to be sent every
-% time some new data is received}
-% \item{if the connection is concurrent, new data is scheduled to be sent after
-% the previous send}
-% \item{once both applications have finished sending their data, close the
-% connection}
-% \end{itemize}
-
-% Details on how data is sent for sequential and concurrent connections are 
-% provided in the two following sections.
 
 \subsection{Sequential Connections}
 
@@ -364,6 +332,17 @@ sent.
 
 \subsection{Acceptor-Sending-First Connections}
 There are some connections where the acceptor sends the first ADU\@.  In reality, the initiator always sets up the TCP connection, but in ns-2 the connection is not setup until the first data bytes are sent.  In these cases, the acceptor will send the SYN to setup the connection and then will send its ADU\@.
+
+\subsection{Sending FINs}
+Some of the connection vectors have an explicit FIN ADU included
+(bytes == 0).  If a connection vector does not have an explicit FIN,
+Tmix will add one upon reading in the connection vector.  The default
+is that the last side (initiator or acceptor) to send an ADU will send
+the FIN 1 second after sending its last ADU.  This time can be
+configured using the {\tt set-fin-time} command.  Changing this
+parameter will affect the TCP dynamics, number of active connections,
+memory, and running time, but will not affect the throughput or
+offered load of the simulation.
 
 \section{Tmix\_DelayBox}
 \label{sec:tmix-db}
@@ -493,24 +472,6 @@ Set the NS id for this object
 Set the run number so that the RNGs used for the random variables will
 use the same substream (see Chapter \ref{chap:math} on RNG for more details).
 
-{\tt \$tmix set-debug <int>}\\
-Set the debugging level:
-% \begin{itemize}
-% 	\item{2: Output: TCP Agent creation, TCP Agent assignment (from pool),
-% 	Application creation, \\
-% 	Application assignment (from pool), number of active and inactive
-% 	Applications, Application completion time, connection establishment time}
-% 	\item{3: Level 1 + \\
-% 	Output: The move of TCP agents and Applications to the respective
-% 	inactive pools \\
-% 	and pool sizes}
-% 	\item{4: Level 2 + \\
-% 	Output: The reading of a connection vector by Tmix on a certain node
-% 	and associated information (node name, connection vector id, connection
-% 	vector start time, current time, number of connections currently running
-% 	on the node)}
-% \end{itemize}
-
 {\tt \$tmix set-warmup <int>}\\
 Sets at what time output should start.  Only used with {\tt set outfile}.
 
@@ -527,7 +488,12 @@ Possible values are ``full'' and ``one-way''. The default mode is Full-TCP. This
 Size of packets to construct and send (TCP MSS)
 
 {\tt \$tmix set-step-size}\\
-Number of connection vector to read at a time from the supplied connection vector file
+Number of connection vectors to read at a time from the supplied connection vector file
+
+{\tt \$tmix set-fin-time <int>}\\
+Tmix adds a FIN to any connection vector that does not have one. This
+parameter sets when the FIN is sent. The default is 1 second (1000000 us) 
+after the last send.
 
 {\tt \$tmix active-connections}\\
 Output the number of currently active connections to standard error or the
@@ -537,6 +503,37 @@ outfile if it has been set.
 Output the total number of completed connections to standard error or
 the outfile if it has been set.
 
+{\tt \$tmix check-oneway-closed}\\
+Check to see if the final ACK has returned before recycling the one-way 
+TCP agent.
+ 
+{\tt \$tmix set-prefill-t <int>}\\
+Accelerate the start of connections that begin in {[}0, prefill\_t\_{]} (s)
+
+{\tt \$tmix set-prefill-si <int>}\\
+Prefill start interval. Connections starting between {}[0,prefill\_t\_{]} 
+instead start {[}(prefill\_t\_-prefill\_si\_), prefill\_t\_{]}
+
+{\tt \$tmix set-scale <int>}\\
+Scale rate for arrival rate adjustment.
+
+{\tt \$tmix set-debug <int>}\\
+Set the debugging level:
+\begin{itemize}
+\item{1 - Connection vector level\\
+  Output: cvecs read in, total connections at end}
+\item{2 - level 1 + connections\\
+  Output: new connections starting, connections ending}
+\item{3 - level 2 + App actions\\
+  Output: stopped, listening, closing, sending FIN, next connection 
+starting in, CVEC-NODE-PORT}
+\item{4 - level 3 + ADU actions\\
+  Output: sent last ADU, sent ADU, recv ADU, send next ADU delay}
+\item{5 - level 4 + packet actions\\
+  Output: recv \emph{xx} bytes (partial ADU)}
+\item{6 - level 5 + pool actions\\
+  Output: TCPAgent/App moved to pool, created new, got from pool, crecycle}
+\end{itemize}
 
 {\bf Tmix\_DelayBox Commands}
 
@@ -555,11 +552,3 @@ Do not induce any losses
 
 {\tt \$tmix\_db set-debug <int>}\\
 Set the debugging level
-% \begin{itemize}
-% \item{1: Output when packets are dropped at DelayBox}
-% \item{2: Level 1 + \\
-% Contents of the queue at each queue operation
-% }
-% \end{itemize}
-
-%\end{document}

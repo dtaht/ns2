@@ -31,7 +31,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $Header: /cvsroot/nsnam/ns-2/mac/mac-802_11.cc,v 1.59 2010/03/08 05:54:52 tom_henderson Exp $
+ * $Header: /cvsroot/nsnam/ns-2/mac/mac-802_11.cc,v 1.60 2011/10/02 22:32:34 tom_henderson Exp $
  *
  * Ported from CMU/Monarch's code, nov'98 -Padma.
  * Contributions by:
@@ -2286,9 +2286,8 @@ Mac802_11::recvBEACON(Packet *p)
 		discard(p, DROP_MAC_BUSY);
 		return;
 	}
-	u_int32_t bss_id, src;
+	u_int32_t src;
 
-	bss_id = ETHER_ADDR(bf->bf_3a);
  	src = ETHER_ADDR(bf->bf_ta);
 	infra_mode_ = 1;
 
@@ -2560,9 +2559,8 @@ Mac802_11::recvASSOCREQ(Packet *p)
 		discard(p, DROP_MAC_BUSY);
 		return;
 	}
-	u_int32_t bss_id, src;
+	u_int32_t src;
 	
-	bss_id = ETHER_ADDR(acrqf->acrqf_3a);
  	src = ETHER_ADDR(acrqf->acrqf_ta);
 	
 	if (!pktASSOCREP_) {
@@ -3038,8 +3036,7 @@ Mac802_11::recvPROBEREQ(Packet *p)
 		discard(p, DROP_MAC_BUSY);
 		return;
 	}
-	u_int32_t bss_id, src;
-	bss_id = ETHER_ADDR(prrqf->prrqf_3a);
+	u_int32_t src;
  	src = ETHER_ADDR(prrqf->prrqf_ta);
 	
 	if (!pktPROBEREP_) {
@@ -3060,11 +3057,10 @@ Mac802_11::recvPROBEREP(Packet *p)
 {
 	struct proberep_frame *prrpf = (struct proberep_frame*)p->access(hdr_mac::offset_);
 
-	u_int32_t bss_id, src;
+	u_int32_t src;
 
 	Pr = p->txinfo_.RxPr;
  	src = ETHER_ADDR(prrpf->prrpf_ta);
-	bss_id = ETHER_ADDR(prrpf->prrpf_ta);
 	
 	update_ap_table(src,Pr);
 		

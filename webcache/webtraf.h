@@ -3,7 +3,7 @@
 /*
  * webtraf.h
  * Copyright (C) 1999 by the University of Southern California
- * $Id: webtraf.h,v 1.18 2005/08/25 18:58:13 johnh Exp $
+ * $Id: webtraf.h,v 1.19 2011/10/01 22:00:14 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -51,7 +51,7 @@
 // only interested in traffic pattern here, we do not want to be bothered 
 // with the burden of transmitting HTTP headers, etc. 
 //
-// $Header: /cvsroot/nsnam/ns-2/webcache/webtraf.h,v 1.18 2005/08/25 18:58:13 johnh Exp $
+// $Header: /cvsroot/nsnam/ns-2/webcache/webtraf.h,v 1.19 2011/10/01 22:00:14 tom_henderson Exp $
 
 #ifndef ns_webtraf_h
 #define ns_webtraf_h

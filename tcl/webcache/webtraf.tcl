@@ -21,7 +21,7 @@
 # configuration interface. Be very careful as what is configuration and 
 # what is functionality.
 #
-# $Header: /cvsroot/nsnam/ns-2/tcl/webcache/webtraf.tcl,v 1.21 2004/10/28 01:24:06 sfloyd Exp $
+# $Header: /cvsroot/nsnam/ns-2/tcl/webcache/webtraf.tcl,v 1.22 2011/10/01 22:00:14 tom_henderson Exp $
 
 PagePool/WebTraf set debug_ false
 PagePool/WebTraf set TCPTYPE_ Reno

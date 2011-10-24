@@ -3,7 +3,7 @@
 /*
  * logweb.cc
  * Copyright (C) 2001 by the University of Southern California
- * $Id: logweb.cc,v 1.7 2010/03/08 05:54:55 tom_henderson Exp $
+ * $Id: logweb.cc,v 1.8 2011/10/02 22:32:35 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -161,7 +161,7 @@ int LogWebTrafPool::launchReq(int cid, int sid, int size) {
 
 	// Setup TCP connection and done
 	Tcl::instance().evalf("%s launch-req %d %d %s %s %s %s %d %d", 
-			      name(), num_obj++, num_obj,
+			      name(), num_obj, num_obj + 1,
 			      client->name(), server->name(),
 			      tcp->name(), snk->name(), num_pkt, NULL);
 

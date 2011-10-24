@@ -2,7 +2,7 @@
 /*
  * webserver.h
  * Copyright (C) 1999 by the University of Southern California
- * $Id: webserver.h,v 1.5 2005/08/25 18:58:13 johnh Exp $
+ * $Id: webserver.h,v 1.6 2011/10/01 22:00:14 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,

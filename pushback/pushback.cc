@@ -611,7 +611,9 @@ PushbackAgent::pushbackRefresh(int qid) {
 			  }
 			  if (maxR < requiredLimit_) {
 				  listItem->setLimit(maxR);
-				  requiredLimit_ += (requiredLimit_ - maxR)/(noSessions - i - 1);
+				  if ((noSessions - i - 1) > 0 ) {
+				  	requiredLimit_ += (requiredLimit_ - maxR)/(noSessions - i - 1);
+				  }
 			  } 
 			  else {
 				  listItem->setLimit(requiredLimit_);

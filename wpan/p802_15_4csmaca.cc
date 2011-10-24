@@ -13,7 +13,7 @@
 // File:  p802_15_4csmaca.cc
 // Mode:  C++; c-basic-offset:8; tab-width:8; indent-tabs-mode:t
 
-// $Header: /cvsroot/nsnam/ns-2/wpan/p802_15_4csmaca.cc,v 1.6 2011/06/22 04:03:26 tom_henderson Exp $
+// $Header: /cvsroot/nsnam/ns-2/wpan/p802_15_4csmaca.cc,v 1.7 2011/10/02 22:32:35 tom_henderson Exp $
 
 /*
  * Copyright (c) 2003-2004 Samsung Advanced Institute of Technology and
@@ -508,7 +508,7 @@ void CsmaCA802_15_4::backoffHandler(void)
 
 void CsmaCA802_15_4::RX_ON_confirm(PHYenum status)
 {
-	double now,wtime;
+	double wtime;
 
 	if (status != p_RX_ON)
 	{
@@ -520,7 +520,6 @@ void CsmaCA802_15_4::RX_ON_confirm(PHYenum status)
 	}
 
 	//locate backoff boundary if needed
-	now = CURRENT_TIME;
 	if (beaconEnabled)
 		wtime = mac->locateBoundary(mac->toParent(txPkt),0.0);
 	else

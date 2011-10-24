@@ -33,9 +33,15 @@
  * ACM Computer Communication Review, July 2006, Vol 36, No 3, pp. 67-76.
  * 
  * Contact: Michele Weigle (mweigle@cs.odu.edu)
+ * http://www.cs.odu.edu/inets/Tmix
  * 
  * For more information on Tmix and to obtain Tmix tools and 
  * connection vectors, see http://netlab.cs.unc.edu/Tmix
+ *
+ * Additional work:
+ *  DongXia Xu - scaling parameter
+ *  David Hayes - prefilling parameters, maximum segment size CV record,
+ *                simulation end time, fixes to one-way tcp recycling.
  */
 
 #ifndef ns_tmix_h
@@ -109,26 +115,30 @@ private:
 class ConnVector
 {
 public:
-	ConnVector() : global_id_(0), start_time_(0.0), init_win_(0),
+	ConnVector() : global_id_(0), start_time_(0.0), init_mss_(1460),
+		       acc_mss_(1460), init_win_(0), 
 		       acc_win_(0), type_(SEQ), init_ADU_count_(0),
 		       acc_ADU_count_(0) {};
 
-	ConnVector (unsigned long id, double start, bool type) : 
-		global_id_(id), start_time_(start), init_win_(0), 
-		acc_win_(0), type_(type),  init_ADU_count_(0), 
+	ConnVector (unsigned long id, double start, bool type, int mss) : 
+		global_id_(id), start_time_(start),
+		init_mss_(mss), acc_mss_(mss),
+		init_win_(0), acc_win_(0), type_(type),  init_ADU_count_(0), 
 		acc_ADU_count_(0) {};
 
 	ConnVector (unsigned long id, double start, bool type, 
-		    int ninit, int nacc) : global_id_(id), start_time_(start),
-					   init_win_(0), acc_win_(0),
-					   type_(type), 
-					   init_ADU_count_(ninit),
-					   acc_ADU_count_(nacc) {};
+		    int ninit, int nacc, int mss) :
+		global_id_(id), start_time_(start),
+		init_mss_(mss), acc_mss_(mss), 
+		init_win_(0), acc_win_(0), type_(type),
+		init_ADU_count_(ninit), acc_ADU_count_(nacc) {};
 
 	~ConnVector();
 
 	inline unsigned long get_ID() {return global_id_;}
 	inline double get_start_time() {return start_time_;}
+	inline int get_init_mss() {return init_mss_;}
+	inline int get_acc_mss() {return acc_mss_;}
 	inline int get_init_win() {return init_win_;}
 	inline int get_acc_win() {return acc_win_;}
 	inline bool get_type() {return type_;}
@@ -141,11 +151,21 @@ public:
 	inline vector<ADU*>::iterator get_acc_ADU_end() 
 	{return acc_ADU_.end();}
   
-	inline void set_init_win (int win, int pcktsz) {
-		init_win_ = (int) (win / pcktsz);
+	inline void set_init_win (int win) {
+		init_win_ = (int) (win / init_mss_);
 	}
-	inline void set_acc_win (int win, int pcktsz) {
-		acc_win_ = (int) (win / pcktsz);
+	inline void set_acc_win (int win) {
+		acc_win_ = (int) (win / acc_mss_);
+	}
+	inline void set_init_mss (int mss) {
+		init_mss_ = mss;
+	}
+	inline void set_acc_mss (int mss) {
+		acc_mss_ = mss;
+	}
+	inline void set_mss (int mss) {
+		init_mss_ = mss;
+		acc_mss_ = mss;
 	}
 	inline void incr_init_ADU_count () {init_ADU_count_++;}
 	inline void incr_acc_ADU_count () {acc_ADU_count_++;}
@@ -158,6 +178,8 @@ public:
 private:
 	unsigned long global_id_;
 	double start_time_;
+	int init_mss_;		/* initiator's maximum segment size */
+	int acc_mss_;		/* acceptor's maximum segment size */
 	int init_win_;          /* initiator's max window in packets */
 	int acc_win_;           /* acceptor's max window in packets */
 	bool type_;             /* SEQ or CONC */
@@ -210,7 +232,8 @@ public:
 	inline bool get_running(){return running_;}
 	inline Agent* get_agent(){return agent_;}
 	inline TmixAgent* get_tmix_agent(){return tmixAgent_;}
-	inline void set_tmix_agent(TmixAgent* tmixAgent) {tmixAgent_ = tmixAgent;}
+	inline void set_tmix_agent(TmixAgent* tmixAgent) {
+		tmixAgent_ = tmixAgent;}
 	inline bool get_type() {return type_;}
 	inline int get_expected_bytes() {return expected_bytes_;}
 	inline unsigned long get_global_id() {return cv_->get_ID();}
@@ -224,8 +247,9 @@ public:
 	inline void set_sink(Agent * s) { sink_ = s; }
 	inline void set_mgr(Tmix* mgr) {mgr_ = mgr;}
 	inline void set_id (unsigned long id) {id_ = id;}
+	inline void set_mss (int mss) {mss_ = mss;}
 	inline void set_expected_bytes (int bytes) {expected_bytes_ = bytes;}
-	inline void incr_expected_bytes (int bytes) {expected_bytes_ += bytes;}
+	inline void incr_expected_bytes (int bytes);
 	inline void set_adu_iter (vector<ADU*>::iterator adu) {ADU_iter_ = adu;}
 	inline void set_cv (ConnVector* cv) {cv_ = cv;}
 	inline void set_type (bool type) {type_ = type;}
@@ -233,6 +257,8 @@ public:
 
 	bool ADU_empty();
 	bool end_of_ADU();
+	int size_of_ADU();
+
 	char* id_str();
 
 protected:
@@ -249,6 +275,8 @@ protected:
            
 	int total_bytes_;          /* total bytes received so far */
 	int expected_bytes_;       /* total bytes expected from peer */
+	int mss_;                  /* maximum segment size of tcp packets (used
+				      with expected_bytes for one-way TCP) */
 
 	TmixAppTimer timer_; 
 	TmixApp* peer_;            /* pointer to the other side (init or acc */
@@ -273,21 +301,34 @@ public:
 	void setup_connection();
   
 	inline double now() {return Scheduler::instance().clock();}
-	inline int get_active() {return active_connections_;}
-	inline int get_total() {return total_connections_;}
+	inline unsigned long get_active() {return active_connections_;}
+	inline void incr_active() {active_connections_++;}
+	inline void decr_active() {active_connections_--;}
+	inline unsigned long get_total() {return total_connections_;}
+	inline void incr_total() {total_connections_++;}
 	inline int running() {return running_;}
 	inline int debug() {return debug_;}
 	inline unsigned long get_ID() {return ID_;}
 	inline int get_warmup() {return warmup_;} 
+	inline double get_prefill_t() {return prefill_t_;}
+	inline double get_scale() {return scale_;}
+	inline double get_end() {return end_;}
 	inline FILE* get_outfp() {return outfp_;}
-	inline double get_next_start() {return (*next_active_)->get_start_time();}
-	inline bool scheduled_all() {return (next_active_ == connections_.end());}
-	inline ConnVector* get_current_cvec() {return (ConnVector*) *next_active_;}
+	inline double get_next_start() {
+		return ((*next_active_)->get_start_time() * scale_);}
+	/* Multiplies the scalefactor to the next cvec's start time. */
+	inline double get_next_prefill_start() {
+		return ((*next_active_)->get_start_time() * scale_ * 
+			prefill_a_ + (prefill_t_ - prefill_si_));}
+	inline bool scheduled_all() {return (next_active_==connections_.end());}
+	inline ConnVector* get_current_cvec() {
+		return (ConnVector*) *next_active_;}
 
 	inline void init_next_active() {next_active_ = connections_.begin();}
 	void incr_next_active();
 
 	inline int getAgentType() { return agentType_; }
+	inline bool check_oneway_closed() { return check_oneway_closed_; }
 
 protected:
 	virtual int command (int argc, const char*const* argv);
@@ -297,9 +338,6 @@ protected:
 	ConnVector* read_one_cvec();
 	ConnVector* read_one_cvec_v1();
 	ConnVector* read_one_cvec_v2();
-	void read_one_cvec_v1_helper(ConnVector * cv, ADU * adu, int last_state,
-		unsigned long last_time_value, unsigned long last_initiator_time_value,
-		unsigned long last_acceptor_time_value, bool pending_initiator, bool pending_acceptor);
 
 	TmixAgent* picktcp();
 	TmixApp* pickApp();	
@@ -322,7 +360,7 @@ protected:
 	FILE* outfp_;
 	FILE* cvfp_;               /* connection vector file pointer */
 	int ID_;                   /* tmix cloud ID */
-	int run_;                  /* exp run number (for RNG stream selection) */
+	int run_;                  /* run number (for RNG stream selection) */
 	int debug_;
 	int pkt_size_;
 	unsigned long step_size_;  /* number of connections to read from cvfp_ 
@@ -335,8 +373,36 @@ protected:
 
 	bool running_;              /* start new connections? */
 
-	int agentType_;
+	int agentType_;             /* FULL or ONE_WAY */
 
+	double prefill_t_;          /* Accelerate the start of connections that
+				      begin in [0,prefill_t_] (s) */
+	double prefill_a_;          /* Prefill acceleration scaling factor */
+	double prefill_si_;         /* Prefill start interval. Connections
+				       starting between [0,prefill_t_] instead
+				       start [(prefill_t_-prefill_si_),
+				       prefill_t_]*/
+
+	double scale_;             /* Scale rate for arrival rate adjust*/
+
+	double end_;               /* Simulation end time. If set, events past
+				      end_ will not be scheduled.  This will
+				      help reduce memory consumption and allow
+				      better TCP agent reuse. It will not effect
+				      the traffic, but will change the number of
+				      active connections.  If you are interested
+				      in the number of active connections you
+				      should NOT set this.*/
+
+	unsigned long fin_time_;  /* (microseconds) Tmix adds a FIN to any 
+				     cvec that does not	have one.  This 
+				     variable sets when the FIN is sent.  The 
+				     default is 1 second (1000000 us) after 
+				     the last send. */
+
+	bool check_oneway_closed_; /* check to see if final ACK has returned
+				      before recycling the one-way TCP agent */
+	
 	TclObject* lookup_obj(const char* name) {
 		TclObject* obj = Tcl::instance().lookup(name);
 		if (obj == NULL) 

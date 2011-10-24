@@ -40,12 +40,12 @@
  *
  * This file contributed by Sandeep Bajaj <bajaj@parc.xerox.com>, Mar 1997.
  *
- * $Header: /cvsroot/nsnam/ns-2/queue/drr.cc,v 1.11 2005/08/26 05:05:29 tomh Exp $
+ * $Header: /cvsroot/nsnam/ns-2/queue/drr.cc,v 1.12 2011/10/02 22:32:34 tom_henderson Exp $
  */
 
 #ifndef lint
 static const char rcsid[] =
-    "@(#) $Header: /cvsroot/nsnam/ns-2/queue/drr.cc,v 1.11 2005/08/26 05:05:29 tomh Exp $ (Xerox)";
+    "@(#) $Header: /cvsroot/nsnam/ns-2/queue/drr.cc,v 1.12 2011/10/02 22:32:34 tom_henderson Exp $ (Xerox)";
 #endif
 
 #include "config.h"   // for string.h
@@ -195,11 +195,9 @@ void DRR::enque(Packet* pkt)
 	while (bytecnt > blimit_) {
 		Packet *p;
 		hdr_cmn *remch;
-		hdr_ip *remiph;
 		remq=getMaxflow(curr);
 		p=remq->deque();
 		remch=hdr_cmn::access(p);
-		remiph=hdr_ip::access(p);
 		remq->bcount -= remch->size();
 		bytecnt -= remch->size();
 		drop(p);
@@ -215,7 +213,6 @@ void DRR::enque(Packet* pkt)
 Packet *DRR::deque(void) 
 {
 	hdr_cmn *ch;
-	hdr_ip *iph;
 	Packet *pkt=0;
 	if (bytecnt==0) {
 		//fprintf (stderr,"No active flow\n");
@@ -230,7 +227,6 @@ Packet *DRR::deque(void)
 
 		pkt=curr->lookup(0);  
 		ch=hdr_cmn::access(pkt);
-		iph=hdr_ip::access(pkt);
 		if (curr->deficitCounter >= ch->size()) {
 			curr->deficitCounter -= ch->size();
 			pkt=curr->deque();

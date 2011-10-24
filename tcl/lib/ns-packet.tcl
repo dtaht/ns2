@@ -33,7 +33,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# @(#) $Header: /cvsroot/nsnam/ns-2/tcl/lib/ns-packet.tcl,v 1.59 2010/05/09 22:28:41 tom_henderson Exp $
+# @(#) $Header: /cvsroot/nsnam/ns-2/tcl/lib/ns-packet.tcl,v 1.60 2011/10/14 22:11:08 tom_henderson Exp $
 #
 # set up the packet format for the simulation
 # (initial version)
@@ -110,7 +110,7 @@ proc remove-all-packet-headers {} {
 	}
 }
 
-foreach prot {
+set protolist {
 # Common:
 	Common 
 	Flags
@@ -183,7 +183,9 @@ foreach prot {
 	Encap 	# common/encap.cc
         IPinIP 	# IP encapsulation 
 	HDLC 	# High Level Data Link Control
-} {
+}
+set allhdrs [regsub -all {#.*?\n} $protolist \n]; # strip comments from above
+foreach prot $allhdrs {
 	add-packet-header $prot
 }
 

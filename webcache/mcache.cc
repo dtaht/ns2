@@ -3,7 +3,7 @@
 /*
  * mcache.cc
  * Copyright (C) 1997 by the University of Southern California
- * $Id: mcache.cc,v 1.13 2005/09/18 23:33:35 tomh Exp $
+ * $Id: mcache.cc,v 1.14 2011/10/15 16:01:05 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -48,7 +48,7 @@
 //
 // Multimedia cache implementation
 //
-// $Header: /cvsroot/nsnam/ns-2/webcache/mcache.cc,v 1.13 2005/09/18 23:33:35 tomh Exp $
+// $Header: /cvsroot/nsnam/ns-2/webcache/mcache.cc,v 1.14 2011/10/15 16:01:05 tom_henderson Exp $
 
 #include <assert.h>
 #include <stdio.h>
@@ -1183,15 +1183,8 @@ public:
 
 MediaServer::MediaServer() : HttpServer() 
 {
-	long keySizeInBytes = sizeof (PageID);
-	long keySizeInSizeOfInt;
-	if ((keySizeInBytes % sizeof (int)) == 0) {
-		keySizeInSizeOfInt = keySizeInBytes / sizeof (int);
-	} else {
-		keySizeInSizeOfInt = keySizeInBytes / sizeof (int) + 1;
-	}
 	pref_ = new Tcl_HashTable;
-	Tcl_InitHashTable(pref_, keySizeInSizeOfInt);
+	Tcl_InitHashTable(pref_, TCL_STRING_KEYS);
 	cmap_ = new Tcl_HashTable;
 	Tcl_InitHashTable(cmap_, TCL_ONE_WORD_KEYS);
 }
@@ -1362,8 +1355,13 @@ int MediaServer::command(int argc, const char*const* argv)
 			assert(app != NULL);
 			int id = atoi (argv[4]);
 			PageID pageId (app, id);
+			int length = strlen (app->name()) + strlen (argv[4]) + 2;
+			char* buf = new char[length];
+			memset(buf, 0, sizeof(buf));
+			sprintf(buf, "%s:%-d", app->name(), id);
 			Tcl_HashEntry *he = 
-				Tcl_FindHashEntry(pref_, (const char*)&pageId);
+				Tcl_FindHashEntry(pref_, buf);
+			delete [] buf;
 			if (he == NULL) {
 				tcl.add_errorf(
 				  "Server %d cannot stop prefetching!\n", id_);
@@ -1462,8 +1460,13 @@ int MediaServer::command(int argc, const char*const* argv)
 			int id = atoi (argv[3]);
 			PageID pageId (app, id);
 			int newEntry = 1;
+			int length = strlen (app->name()) + strlen (argv[3]) + 2;
+			char* buf = new char[length];
+			memset(buf, 0, sizeof(buf));
+			sprintf(buf, "%s:%-d", app->name(), id);
 			Tcl_HashEntry *he = Tcl_CreateHashEntry(pref_, 
-					(const char*)&pageId, &newEntry);
+					buf, &newEntry);
+			delete [] buf;
 			if (he == NULL) {
 				fprintf(stderr, "Cannot create entry.\n");
 				return TCL_ERROR;

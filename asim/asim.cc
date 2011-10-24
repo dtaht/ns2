@@ -2,7 +2,7 @@
 /*
  * asim.cc
  * Copyright (C) 2000 by the University of Southern California
- * $Id: asim.cc,v 1.12 2010/03/08 05:54:49 tom_henderson Exp $
+ * $Id: asim.cc,v 1.13 2011/10/02 22:32:34 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -582,12 +582,13 @@ void  CalcLinkDelays(int flag = 0){
     // Special code for RED gateways
     if(flag){
       if(links[i].red){
-	double minth, maxth, pmin, pmax, delay,p;
+	double p, delay;
+	/* Debo's RED approx
+	double minth, maxth, pmin, pmax;
 	minth = links[i].minth;
 	maxth = links[i].maxth;
 	pmin = links[i].pmin;
 	pmax = links[i].pmax;
-	/* Debo's RED approx
 	links[i].drop = redFn(minth,pmin,maxth,pmax,qlength/links[i].buffer);
 	qlength = (1-links[i].drop)*links[i].buffer;
 	links[i].qdelay = qlength/links[i].mu; 

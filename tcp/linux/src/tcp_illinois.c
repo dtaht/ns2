@@ -310,6 +310,8 @@ static u32 tcp_illinois_ssthresh(struct sock *sk)
 static void tcp_illinois_info(struct sock *sk, u32 ext,
 			      struct sk_buff *skb)
 {
+#if 0
+/* The below does nothing in ns-2 since nla_put is a null macro */
 	skb = skb;
 
 	const struct illinois *ca = inet_csk_ca(sk);
@@ -327,6 +329,7 @@ static void tcp_illinois_info(struct sock *sk, u32 ext,
 
 		nla_put(skb, INET_DIAG_VEGASINFO, sizeof(info), &info);
 	}
+#endif
 }
 
 static struct tcp_congestion_ops tcp_illinois = {

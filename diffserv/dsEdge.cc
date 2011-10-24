@@ -76,11 +76,10 @@ Post: The incoming packet pointed to by pkt is marked with an appropriate code
 Uses: Methods Policy::mark(), lookupPHBTable(), and redQueue::enque(). 
 ------------------------------------------------------------------------------*/
 void edgeQueue::enque(Packet* pkt) {
-	int codePt;
 
 	// Mark the packet with the specified priority:
 	//printf("before ,mark\n");
-	codePt = policy.mark(pkt);
+	policy.mark(pkt);
 	//	printf("after ,mark\n");
 	dsREDQueue::enque(pkt);
 }

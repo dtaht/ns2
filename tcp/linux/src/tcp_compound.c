@@ -289,7 +289,11 @@ static void tcp_compound_cong_avoid(struct sock *sk, u32 ack,
 
 	if (after(ack, vegas->beg_snd_nxt)) {
 		/* Do the Vegas once-per-RTT cwnd adjustment. */
-		u32 old_wnd, old_snd_cwnd;
+		u32 old_wnd;
+#if 0
+		/* Defined but unused */
+		u32 old_snd_cwnd;
+#endif
 
 		/* Here old_wnd is essentially the window of data that was
 		 * sent during the previous RTT, and has all
@@ -302,7 +306,10 @@ static void tcp_compound_cong_avoid(struct sock *sk, u32 ack,
 
 		old_wnd = (vegas->beg_snd_nxt - vegas->beg_snd_una) /
 		    tp->mss_cache;
+#if 0
+		/* Defined but unused */
 		old_snd_cwnd = vegas->beg_snd_cwnd;
+#endif
 
 		/* Save the extent of the current window so we can use this
 		 * at the end of the next RTT.

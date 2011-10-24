@@ -57,6 +57,7 @@
  
 #ifndef ns_mac_80211Ext_h
 #define ns_mac_80211Ext_h
+#include <stddef.h>
 #include "marshall.h"
 #include "timer-handler.h"
 #define GET_ETHER_TYPE(x)		GET2BYTE((x))

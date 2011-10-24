@@ -382,7 +382,7 @@ SRC =	$(OBJ_C:.o=.c) $(OBJ_CC:.o=.cc) \
 OBJ =	$(OBJ_C) $(OBJ_CC) $(OBJ_GEN) $(OBJ_COMPAT)
 
 CLEANFILES = ns nse nsx ns.dyn $(OBJ) $(OBJ_EMULATE_CC) \
-	$(OBJ_EMULATE_C) common/tclAppInit.o \
+	$(OBJ_EMULATE_C) common/tclAppInit.o common/main-monolithic.o \
 	common/tkAppInit.o nstk \
 	$(GEN_DIR)* $(NS).core core core.$(NS) core.$(NSX) core.$(NSE) \
 	common/ptypes2tcl common/ptypes2tcl.o 
@@ -560,8 +560,11 @@ install-man: force
 install-recursive: force
 	for i in $(SUBDIRS); do ( cd $$i; $(MAKE) install; ) done
 
-clean:
+clean: clean-recursive
 	$(RM) $(CLEANFILES)
+
+clean-recursive:
+	for i in $(SUBDIRS); do ( cd $$i; $(MAKE) clean; ) done
 
 AUTOCONF_GEN = tcl/lib/ns-autoconf.tcl
 distclean: distclean-recursive

@@ -170,7 +170,6 @@ void TfrcSinkAgent::recv(Packet *pkt, Handler *)
 	int ecnEvent = 0;
 	int congestionEvent = 0;
 	int UrgentFlag = 0;	// send loss report immediately
-	int newdata = 0;	// a new data packet received
 
 	if (algo == WALI && !init_WALI_flag) {
 		init_WALI () ;
@@ -182,7 +181,6 @@ void TfrcSinkAgent::recv(Packet *pkt, Handler *)
 
 	if (maxseq < 0) {
 		// This is the first data packet.
-		newdata = 1;
 		maxseq = tfrch->seqno - 1 ;
 		maxseqList = tfrch->seqno;
 		rtvec_=(double *)malloc(sizeof(double)*hsz);

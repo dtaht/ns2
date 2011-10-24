@@ -93,7 +93,10 @@ RateLimitStrategy::restrictPacketType(int type, double share, double actual) {
 double 
 RateLimitStrategy::getDropRate() {
   double inRate = rateEstimator_->estRate_;
-  double dropRate = (inRate - target_rate_)/inRate;
+  double dropRate = 0;
+  if (inRate > 0) {
+	dropRate = (inRate - target_rate_)/inRate;
+  }  
   if (dropRate < 0) dropRate=0;
   return dropRate;
 }

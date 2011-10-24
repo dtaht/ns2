@@ -169,7 +169,7 @@ public:
 	int min_quantum;
 
 	inline PacketSRR *getMaxflow () { //returns flow with max bytes 
-		int j,i;
+		int i;
 		PacketSRR *tmp=0;
 		PacketSRR *maxflow=0;
 		
@@ -180,7 +180,7 @@ public:
 			tmp=&srr[i];
 			if (tmp->bcount > bcount){
 					bcount= tmp->bcount;
-					maxflow=tmp;j=i;
+					maxflow=tmp;
 			}
 		}
 		if(maxflow==0){
@@ -248,7 +248,7 @@ SRR::SRR()
 		wmTail[i].prev=&wmHead[i];
 		wmTail[i].next=NULL;
 		wmHead[i].queueid=wmTail[i].queueid=-1; // 
-		wmHead[i].weight=wmHead[i].weight=i;
+		wmHead[i].weight=wmTail[i].weight=i;
 	}
 
 	for (i=0;i<MAXFLOW; i++)	
@@ -688,7 +688,6 @@ rr:
  */
 struct wm_node *SRR::getNextNode(){
   //struct wm_node *pNode;
-  int queueid;
   int weight;
   int wss_term;
   int temp;
@@ -699,7 +698,6 @@ struct wm_node *SRR::getNextNode(){
 		return NULL;
 	}
 
-	queueid=pwmCurr->queueid;
 	weight= pwmCurr->weight;
 
 	if(pwmCurr->next != &wmTail[weight]){ // not the tail 

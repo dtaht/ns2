@@ -352,7 +352,7 @@ void XCPQueue::everyRTT ()
 void  XCPQueue::drop(Packet* p)
 {
 	drops_++;
-	total_drops_ = total_drops_++;
+	total_drops_++;
   
 	Connector::drop(p);
 }

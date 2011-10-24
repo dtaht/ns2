@@ -4,7 +4,7 @@
 /*
  * webtraf.cc
  * Copyright (C) 1999 by the University of Southern California
- * $Id: webtraf.cc,v 1.30 2005/09/18 23:33:35 tomh Exp $
+ * $Id: webtraf.cc,v 1.31 2011/10/01 22:00:14 tom_henderson Exp $
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
@@ -49,7 +49,7 @@
 //
 // Incorporation Polly's web traffic module into the PagePool framework
 //
-// $Header: /cvsroot/nsnam/ns-2/webcache/webtraf.cc,v 1.30 2005/09/18 23:33:35 tomh Exp $
+// $Header: /cvsroot/nsnam/ns-2/webcache/webtraf.cc,v 1.31 2011/10/01 22:00:14 tom_henderson Exp $
 
 #include "config.h"
 #include <tclcl.h>
