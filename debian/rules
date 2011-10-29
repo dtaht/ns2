@@ -21,6 +21,8 @@ override_dh_auto_clean:
 	find . -name ".cvsignore" -exec rm {} \;
 
 override_dh_auto_install:
+	mkdir -p debian/tmp/usr/bin
+	dh_auto_install
 
 override_dh_auto_test:
 	#it takes too long time.

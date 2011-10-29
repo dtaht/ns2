@@ -1,0 +1,13 @@
+Index: ns2/Makefile.in
+===================================================================
+--- ns2.orig/Makefile.in	2011-10-24 16:05:23.743036202 +0800
++++ ns2/Makefile.in	2011-10-29 21:21:56.263471920 +0800
+@@ -549,7 +549,7 @@
+ 	done
+ 
+ 
+-install: dirs force install-ns install-man
++install: dirs force install-ns install-man install-recursive
+ 
+ install-ns: force
+ 	$(INSTALL) -m 755 ns $(DESTDIR)$(BINDEST)
