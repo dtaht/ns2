@@ -1,0 +1,6 @@
+ns2 binary: binary-without-manpage usr/bin/calcdest
+ns2 binary: binary-without-manpage usr/bin/dec-tr-stat
+ns2 binary: binary-without-manpage usr/bin/epa-tr-stat
+ns2 binary: binary-without-manpage usr/bin/nlanr-tr-stat
+ns2 binary: binary-without-manpage usr/bin/setdest
+ns2 binary: binary-without-manpage usr/bin/ucb-tr-stat
