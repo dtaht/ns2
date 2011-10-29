@@ -1,0 +1,10 @@
+/.cvsignore/1.1/Fri Dec  1 23:01:00 2000//
+/jacobson88-noss.gz/1.1/Sun Jun 10 22:33:57 2007/-kb/
+/jacobson88-ss.gz/1.1/Sun Jun 10 22:33:59 2007/-kb/
+/rto-karn.gz/1.1/Sun Jun 10 22:34:01 2007/-kb/
+/rto-nokarn.gz/1.1/Sun Jun 10 22:34:05 2007/-kb/
+/rtt-jacobson.gz/1.1/Sun Jun 10 22:34:06 2007/-kb/
+/rtt-rfc793.gz/1.1/Sun Jun 10 22:34:09 2007/-kb/
+/seqno-fastrtx.gz/1.1/Sun Jun 10 22:34:10 2007/-kb/
+/seqno-nofastrtx.gz/1.1/Sun Jun 10 22:34:14 2007/-kb/
+D
