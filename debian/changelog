@@ -7,6 +7,9 @@ ns2 (2.35~rc10+dfsg-1) unstable; urgency=low
       patches/install-indep-utils.diff
   * Remove an bin file from source: dfsg it.
       indep-utils/model-gen/crl_to_pcap
+      indep-utils/model-gen/output_format.pdf
+      indep-utils/model-gen/trace_processing.pdf
+      wpan/WPAN_ZBR_pub.pdf
   * switch to team maintain.
   * chmod -x tcl/test/test-sack
 
