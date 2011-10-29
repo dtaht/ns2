@@ -1,5 +1,6 @@
-ns2 (2.35~rc9+dfsg-1) unstable; urgency=low
-
+ns2 (2.35~rc10+dfsg-1) unstable; urgency=low
+  
+  * New upstream RC release.
   * Install some useful tools in indep-utils.
       patches/install-indep-utils.diff
   * Remove an bin file from source: dfsg it.
