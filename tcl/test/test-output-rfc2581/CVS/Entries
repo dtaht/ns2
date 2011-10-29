@@ -1,0 +1,10 @@
+/.cvsignore/1.1/Fri Dec  1 23:01:00 2000//
+/immediateAck.gz/1.1/Sun Jun 10 22:33:01 2007/-kb/
+/immediateAckNewReno.gz/1.1/Sun Jun 10 22:33:06 2007/-kb/
+/immediateAckReno.gz/1.1/Sun Jun 10 22:33:09 2007/-kb/
+/immediateAckSack.gz/1.1/Sun Jun 10 22:33:12 2007/-kb/
+/noImmediateAck.gz/1.1/Sun Jun 10 22:33:17 2007/-kb/
+/noImmediateAckNewReno.gz/1.1/Sun Jun 10 22:33:20 2007/-kb/
+/noImmediateAckReno.gz/1.1/Sun Jun 10 22:33:21 2007/-kb/
+/noImmediateAckSack.gz/1.1/Sun Jun 10 22:33:24 2007/-kb/
+D

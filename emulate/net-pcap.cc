@@ -33,7 +33,7 @@
  */
 #ifndef lint
 static const char rcsid[] =
-    "@(#) $Header: /cvsroot/nsnam/ns-2/emulate/net-pcap.cc,v 1.23 2005/09/07 06:35:45 tomh Exp $ (LBL)";
+    "@(#) $Header: /cvsroot/nsnam/ns-2/emulate/net-pcap.cc,v 1.24 2011/10/26 14:24:58 tom_henderson Exp $ (LBL)";
 #endif
 
 #include <stdio.h>
@@ -53,6 +53,10 @@ static const char rcsid[] =
 #endif
 #if defined(sun) && defined(__svr4__)
 #include <sys/systeminfo.h>
+#endif
+
+#if !defined(__linux__)&&!defined(__APPLE__)
+#include <net/bpf.h>
 #endif
 
 #ifdef __cplusplus
