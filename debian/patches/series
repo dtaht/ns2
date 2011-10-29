@@ -1,5 +1,3 @@
-ftbfs-kfreebsd-bpf.patch
 tclcl-header-move.patch
-ns-man-Poison-reverse
 validate-test-exit-number
 install-indep-utils.diff

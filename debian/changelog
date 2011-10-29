@@ -1,6 +1,8 @@
 ns2 (2.35~rc10+dfsg-1) unstable; urgency=low
   
   * New upstream RC release.
+    drop ftbfs-kfreebsd-bpf.patch, ns-man-Poison-reverse,
+    accept by upstream.
   * Install some useful tools in indep-utils.
       patches/install-indep-utils.diff
   * Remove an bin file from source: dfsg it.
