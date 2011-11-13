@@ -17,6 +17,9 @@ override_dh_auto_install:
 	mkdir -p debian/tmp/usr/bin
 	dh_auto_install
 
+override_dh_strip:
+	dh_strip --dbg-package=ns2-dbg
+
 override_dh_auto_test:
 	#it takes too long time.
 
@@ -31,5 +34,6 @@ dfsg-orig:
 	rm ns-2.*/indep-utils/model-gen/output_format.pdf; \
 	rm ns-2.*/indep-utils/model-gen/trace_processing.pdf; \
 	rm ns-2.*/wpan/WPAN_ZBR_pub.pdf; \
+	chmod a-x ns-2.*/tcl/test/test-sack; \
 	tar Jcf `echo $$TAR_NAME| sed s/.orig.tar.gz/+dfsg.orig.tar.xz/g` ns-2.*/; \
 	rm -rf ns-2.*

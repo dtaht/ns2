@@ -31,6 +31,28 @@ Description: Discrete event simulator targeted at networking research
  contributions from other researchers, including wireless code from the 
  UCB Daedelus and CMU Monarch projects and Sun Microsystems.
 
+Package: ns2-dbg
+Architecture: any
+Priority: extra
+Section: debug
+Depends: ns2 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: debug symbols of ns2
+ Provides substantial support for simulation of TCP, routing, 
+ and multicast protocols over wired and wireless (local and satellite) 
+ networks.
+ Ns-2 is written in C++ and an Object oriented version of Tcl called OTcl.
+ . 
+ Ns began as a variant of the REAL network simulator in 1989 and has 
+ evolved substantially over the past few years. In 1995 ns development 
+ was supported by DARPA through the VINT project  at LBL, Xerox PARC, 
+ UCB, and USC/ISI. Currently ns development is support through DARPA 
+ with SAMAN  and through NSF with CONSER, both in collaboration with 
+ other researchers including ACIRI. Ns has always included substantal 
+ contributions from other researchers, including wireless code from the 
+ UCB Daedelus and CMU Monarch projects and Sun Microsystems.
+ .
+ This package contains debug symbols which can be used by gdb.
+
 Package: ns2-doc
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}
