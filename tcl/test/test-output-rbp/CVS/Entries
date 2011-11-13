@@ -1,9 +1,0 @@
-/.cvsignore/1.1/Mon Jun 29 23:51:06 1998//
-/reno_no_slow_start_restart.gz/1.1/Sun Jun 10 21:51:38 2007/-kb/
-/reno_pacing.gz/1.1/Sun Jun 10 21:51:39 2007/-kb/
-/reno_slow_start_restart.gz/1.1/Sun Jun 10 21:51:40 2007/-kb/
-/vegas_no_slow_start_restart.gz/1.1/Sun Jun 10 21:51:41 2007/-kb/
-/vegas_pacing_cwnd.gz/1.1/Sun Jun 10 21:51:42 2007/-kb/
-/vegas_pacing_rate.gz/1.1/Sun Jun 10 21:51:43 2007/-kb/
-/vegas_slow_start_restart.gz/1.1/Sun Jun 10 21:51:44 2007/-kb/
-D
