@@ -1,13 +1,6 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
-
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+export DH_VERBOSE=1
 
 # in doc dir ,make will be failed.
 
@@ -29,3 +22,14 @@ override_dh_auto_test:
 
 override_dh_installchangelogs:
 	dh_installchangelogs CHANGES.html
+
+dfsg-orig:
+	cd ..; \
+	TAR_NAME=`ls ns2_2.*.orig.tar.gz`; \
+	tar xzf $$TAR_NAME; \
+	rm ns-2.*/indep-utils/model-gen/crl_to_pcap; \
+	rm ns-2.*/indep-utils/model-gen/output_format.pdf; \
+	rm ns-2.*/indep-utils/model-gen/trace_processing.pdf; \
+	rm ns-2.*/wpan/WPAN_ZBR_pub.pdf; \
+	tar Jcf `echo $$TAR_NAME| sed s/.orig.tar.gz/+dfsg.orig.tar.xz/g` ns-2.*/; \
+	rm -rf ns-2.*
