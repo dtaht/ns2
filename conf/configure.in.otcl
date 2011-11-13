@@ -1,5 +1,5 @@
 dnl autoconf rules to find otcl
-dnl $Header: /cvsroot/nsnam/conf/configure.in.otcl,v 1.23 2010/02/16 06:07:43 tom_henderson Exp $ (LBL)
+dnl $Header: /cvsroot/nsnam/conf/configure.in.otcl,v 1.25 2011/10/31 04:33:25 tom_henderson Exp $ (LBL)
 
 AC_ARG_WITH(otcl,	--with-otcl=path	specify a pathname for otcl, d=$withval, d="")
 
