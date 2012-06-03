@@ -1,7 +1,7 @@
 Index: ns2/nix/nixnode.h
 ===================================================================
---- ns2.orig/nix/nixnode.h	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/nix/nixnode.h	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/nix/nixnode.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/nix/nixnode.h	2012-06-03 22:28:38.958243200 +0800
 @@ -9,7 +9,7 @@
  #include "routealgo/rnode.h"
  #include "object.h"
@@ -13,8 +13,8 @@ Index: ns2/nix/nixnode.h
  public :
 Index: ns2/nix/nixvec.h
 ===================================================================
---- ns2.orig/nix/nixvec.h	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/nix/nixvec.h	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/nix/nixvec.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/nix/nixvec.h	2012-06-03 22:28:38.958243200 +0800
 @@ -57,7 +57,7 @@
  #ifdef WIN32
  #include <pair.h>   // for MSVC 6.0 that doens't have a proper <utility>
@@ -26,8 +26,8 @@ Index: ns2/nix/nixvec.h
  typedef unsigned long Nixl_t; // Length of a NV
 Index: ns2/routealgo/rnode.h
 ===================================================================
---- ns2.orig/routealgo/rnode.h	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/routealgo/rnode.h	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/routealgo/rnode.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/routealgo/rnode.h	2012-06-03 22:28:38.958243200 +0800
 @@ -15,7 +15,7 @@
  #ifdef USE_HASH
  #include <hash_set>
@@ -39,8 +39,8 @@ Index: ns2/routealgo/rnode.h
  typedef unsigned int  weight_t; // Weight
 Index: ns2/mac/wireless-phyExt.h
 ===================================================================
---- ns2.orig/mac/wireless-phyExt.h	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/mac/wireless-phyExt.h	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/mac/wireless-phyExt.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/mac/wireless-phyExt.h	2012-06-03 22:28:38.958243200 +0800
 @@ -66,7 +66,7 @@
  #include "timer-handler.h"
  #include <list>
@@ -52,8 +52,8 @@ Index: ns2/mac/wireless-phyExt.h
  typedef struct ModulationParam {
 Index: ns2/mobile/shadowing-vis.cc
 ===================================================================
---- ns2.orig/mobile/shadowing-vis.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/mobile/shadowing-vis.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/mobile/shadowing-vis.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/mobile/shadowing-vis.cc	2012-06-03 22:28:38.958243200 +0800
 @@ -71,7 +71,7 @@
  //#define WHITE 0xff
  
@@ -65,8 +65,8 @@ Index: ns2/mobile/shadowing-vis.cc
  	ShadowingVisClass() : TclClass("Propagation/ShadowingVis") {}
 Index: ns2/mdart/mdart_function.h
 ===================================================================
---- ns2.orig/mdart/mdart_function.h	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/mdart/mdart_function.h	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/mdart/mdart_function.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/mdart/mdart_function.h	2012-06-03 22:28:38.958243200 +0800
 @@ -68,7 +68,7 @@
  
  
@@ -78,8 +78,8 @@ Index: ns2/mdart/mdart_function.h
  //------------------------------------------------------------------------------
 Index: ns2/mpls/ldp.cc
 ===================================================================
---- ns2.orig/mpls/ldp.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/mpls/ldp.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/mpls/ldp.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/mpls/ldp.cc	2012-06-03 22:28:38.958243200 +0800
 @@ -69,7 +69,7 @@
  #include <iostream>
  
@@ -91,8 +91,8 @@ Index: ns2/mpls/ldp.cc
  static class LDPHeaderClass : public PacketHeaderClass {
 Index: ns2/asim/asim.cc
 ===================================================================
---- ns2.orig/asim/asim.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/asim/asim.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/asim/asim.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/asim/asim.cc	2012-06-03 22:28:38.962243216 +0800
 @@ -61,7 +61,7 @@
  #include "asim.h"
  
@@ -104,8 +104,8 @@ Index: ns2/asim/asim.cc
    double delay; // total delay;
 Index: ns2/routealgo/rbitmap.h
 ===================================================================
---- ns2.orig/routealgo/rbitmap.h	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/routealgo/rbitmap.h	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/routealgo/rbitmap.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/routealgo/rbitmap.h	2012-06-03 22:28:38.962243216 +0800
 @@ -59,7 +59,7 @@
  
  #include <iostream>
@@ -117,8 +117,8 @@ Index: ns2/routealgo/rbitmap.h
  class BitMap {
 Index: ns2/common/scheduler-map.cc
 ===================================================================
---- ns2.orig/common/scheduler-map.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/common/scheduler-map.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/common/scheduler-map.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/common/scheduler-map.cc	2012-06-03 22:28:38.962243216 +0800
 @@ -43,7 +43,7 @@
  #include <set>
  
@@ -130,8 +130,8 @@ Index: ns2/common/scheduler-map.cc
  public:
 Index: ns2/linkstate/ls.cc
 ===================================================================
---- ns2.orig/linkstate/ls.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/linkstate/ls.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/linkstate/ls.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/linkstate/ls.cc	2012-06-03 22:28:38.962243216 +0800
 @@ -65,7 +65,7 @@
  #ifdef HAVE_STL
  
@@ -143,8 +143,8 @@ Index: ns2/linkstate/ls.cc
  
 Index: ns2/linkstate/ls.h
 ===================================================================
---- ns2.orig/linkstate/ls.h	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/linkstate/ls.h	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/linkstate/ls.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/linkstate/ls.h	2012-06-03 22:28:38.962243216 +0800
 @@ -70,7 +70,7 @@
  #include <utility>
  
@@ -165,8 +165,8 @@ Index: ns2/linkstate/ls.h
  		return (it == baseMap::end()) ? (T *)NULL : &((*it).second);
 Index: ns2/pgm/pgm-agent.cc
 ===================================================================
---- ns2.orig/pgm/pgm-agent.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/pgm/pgm-agent.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/pgm/pgm-agent.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/pgm/pgm-agent.cc	2012-06-03 22:28:38.962243216 +0800
 @@ -74,7 +74,7 @@
  #include "basetrace.h"
  
@@ -178,8 +178,8 @@ Index: ns2/pgm/pgm-agent.cc
  // ************************************************************
 Index: ns2/pgm/pgm-sender.cc
 ===================================================================
---- ns2.orig/pgm/pgm-sender.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/pgm/pgm-sender.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/pgm/pgm-sender.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/pgm/pgm-sender.cc	2012-06-03 22:28:38.962243216 +0800
 @@ -75,7 +75,7 @@
  #include "basetrace.h"
  
@@ -191,8 +191,8 @@ Index: ns2/pgm/pgm-sender.cc
  // ************************************************************
 Index: ns2/pgm/pgm-receiver.cc
 ===================================================================
---- ns2.orig/pgm/pgm-receiver.cc	2012-06-03 17:49:42.528663107 +0800
-+++ ns2/pgm/pgm-receiver.cc	2012-06-03 17:54:09.000000000 +0800
+--- ns2.orig/pgm/pgm-receiver.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/pgm/pgm-receiver.cc	2012-06-03 22:28:38.962243216 +0800
 @@ -74,7 +74,7 @@
  #include "rcvbuf.h"
  
@@ -204,21 +204,21 @@ Index: ns2/pgm/pgm-receiver.cc
  // ************************************************************
 Index: ns2/diffusion3/ns/difftimer.h
 ===================================================================
---- ns2.orig/diffusion3/ns/difftimer.h	2011-04-15 17:26:28.000000000 +0800
-+++ ns2/diffusion3/ns/difftimer.h	2012-06-03 18:02:00.040320228 +0800
-@@ -56,7 +56,7 @@
+--- ns2.orig/diffusion3/ns/difftimer.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/diffusion3/ns/difftimer.h	2012-06-03 22:31:02.206953531 +0800
+@@ -55,7 +55,7 @@
+ #include <list>
  #include "scheduler.h"
  #include "timers.hh"
- 
 -
 +using namespace std;
+ 
  class MapEntry;
  class DiffEventQueue;
- 
 Index: ns2/delaybox/delaybox.h
 ===================================================================
---- ns2.orig/delaybox/delaybox.h	2011-04-15 17:26:28.000000000 +0800
-+++ ns2/delaybox/delaybox.h	2012-06-03 18:39:41.687535054 +0800
+--- ns2.orig/delaybox/delaybox.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/delaybox/delaybox.h	2012-06-03 22:28:38.962243216 +0800
 @@ -43,7 +43,7 @@
  #include "node.h"
  #include "ranvar.h"
@@ -230,8 +230,8 @@ Index: ns2/delaybox/delaybox.h
  void packet_string (char* str, hdr_tcp* tcph, hdr_ip* iph, int size);
 Index: ns2/packmime/packmime_HTTP.h
 ===================================================================
---- ns2.orig/packmime/packmime_HTTP.h	2011-04-15 17:26:28.000000000 +0800
-+++ ns2/packmime/packmime_HTTP.h	2012-06-03 18:41:01.471930762 +0800
+--- ns2.orig/packmime/packmime_HTTP.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/packmime/packmime_HTTP.h	2012-06-03 22:28:38.962243216 +0800
 @@ -54,7 +54,7 @@
  #include <map>
  
@@ -243,8 +243,8 @@ Index: ns2/packmime/packmime_HTTP.h
  class PackMimeHTTPTimer;
 Index: ns2/packmime/packmime_OL.h
 ===================================================================
---- ns2.orig/packmime/packmime_OL.h	2011-04-15 17:26:28.000000000 +0800
-+++ ns2/packmime/packmime_OL.h	2012-06-03 19:15:41.958247325 +0800
+--- ns2.orig/packmime/packmime_OL.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/packmime/packmime_OL.h	2012-06-03 22:28:38.966243237 +0800
 @@ -73,7 +73,7 @@
  	void init();
  	int size_;
@@ -256,8 +256,8 @@ Index: ns2/packmime/packmime_OL.h
  	RandomVariable* pm_pac_ia_;
 Index: ns2/tmix/tmix.h
 ===================================================================
---- ns2.orig/tmix/tmix.h	2011-10-24 16:05:24.507039988 +0800
-+++ ns2/tmix/tmix.h	2012-06-03 20:32:06.623570085 +0800
+--- ns2.orig/tmix/tmix.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/tmix/tmix.h	2012-06-03 22:28:38.966243237 +0800
 @@ -68,7 +68,7 @@
  #define CVEC_LINE_MAX 100
  #define CV_V1 1
@@ -267,3 +267,110 @@ Index: ns2/tmix/tmix.h
  class FullTcpAgent;
  class Tmix;
  class TmixTimer;
+Index: ns2/diffusion3/lib/main/iodev.cc
+===================================================================
+--- ns2.orig/diffusion3/lib/main/iodev.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/diffusion3/lib/main/iodev.cc	2012-06-03 22:28:38.966243237 +0800
+@@ -49,6 +49,8 @@
+   max_in_descriptor_ = 0;
+ }
+ 
++DiffusionIO::~DiffusionIO(){ ;}
++
+ void DiffusionIO::addInFDS(fd_set *fds, int *max)
+ {
+   list<int>::iterator itr;
+Index: ns2/diffusion3/lib/main/iodev.hh
+===================================================================
+--- ns2.orig/diffusion3/lib/main/iodev.hh	2012-06-03 22:28:33.878218018 +0800
++++ ns2/diffusion3/lib/main/iodev.hh	2012-06-03 22:28:38.966243237 +0800
+@@ -65,9 +65,7 @@
+ public:
+   DiffusionIO();
+ 
+-  virtual ~DiffusionIO(){
+-    // Nothing to do
+-  };
++  virtual ~DiffusionIO();
+ 
+   virtual void addInFDS(fd_set *fds, int *max);
+   virtual bool hasFD(int fd);
+Index: ns2/diffusion3/lib/main/events.cc
+===================================================================
+--- ns2.orig/diffusion3/lib/main/events.cc	2012-06-03 22:28:33.878218018 +0800
++++ ns2/diffusion3/lib/main/events.cc	2012-06-03 22:28:38.966243237 +0800
+@@ -87,6 +87,7 @@
+ //
+ //  EventQueue Methods
+ //
++EventQueue::~EventQueue(){;};
+ 
+ int EventQueue::eventCmp(QueueEvent *x, QueueEvent *y)
+ {
+Index: ns2/diffusion3/lib/main/events.hh
+===================================================================
+--- ns2.orig/diffusion3/lib/main/events.hh	2012-06-03 22:28:33.878218018 +0800
++++ ns2/diffusion3/lib/main/events.hh	2012-06-03 22:28:38.966243237 +0800
+@@ -88,9 +88,7 @@
+     // Empty
+     head_ = NULL;
+   };
+-  virtual ~EventQueue(){
+-    // Empty
+-  };
++  virtual ~EventQueue();
+ 
+   virtual void eqAddAfter(handle hdl, void *payload, int delay_msec);
+   QueueEvent * eqPop();
+Index: ns2/common/scheduler.cc
+===================================================================
+--- ns2.orig/common/scheduler.cc	2011-04-15 17:26:28.000000000 +0800
++++ ns2/common/scheduler.cc	2012-06-03 22:34:14.947909229 +0800
+@@ -166,6 +166,8 @@
+ 	char* proc_;
+ };
+ 
++Handler::~Handler(){;}
++
+ class AtHandler : public Handler {
+ public:
+ 	void handle(Event* event);
+Index: ns2/common/scheduler.h
+===================================================================
+--- ns2.orig/common/scheduler.h	2012-06-03 22:28:33.878218018 +0800
++++ ns2/common/scheduler.h	2012-06-03 22:32:58.719531283 +0800
+@@ -70,7 +70,7 @@
+  */
+ class Handler {
+  public:
+-	virtual ~Handler () {}
++	virtual ~Handler ();
+ 	virtual void handle(Event* event) = 0;
+ };
+ 
+Index: ns2/diffusion3/lib/dr.hh
+===================================================================
+--- ns2.orig/diffusion3/lib/dr.hh	2012-06-03 22:28:17.606137325 +0800
++++ ns2/diffusion3/lib/dr.hh	2012-06-03 22:29:10.918401682 +0800
+@@ -72,7 +72,7 @@
+ #ifdef UDP
+ #include "drivers/UDPlocal.hh"
+ #endif // UDP
+-
++using namespace std;
+ #define WAIT_FOREVER       -1
+ #define POLLING_INTERVAL   10 // seconds
+ #define SMALL_TIMEOUT      10 // milliseconds
+Index: ns2/diffusion3/ns/diffagent.h
+===================================================================
+--- ns2.orig/diffusion3/ns/diffagent.h	2011-04-15 17:26:28.000000000 +0800
++++ ns2/diffusion3/ns/diffagent.h	2012-06-03 22:59:25.579400088 +0800
+@@ -61,7 +61,7 @@
+ 
+ class NsLocal : public DiffusionIO {
+ public:
+-	NsLocal(DiffAppAgent *agent) { agent_ = agent;}
++	NsLocal(DiffAppAgent *agent);
+ 	~NsLocal() {};
+ 	DiffPacket recvPacket(int fd);
+ 	void sendPacket(DiffPacket p, int len, int dst);

@@ -1,6 +1,7 @@
 find_package(TCL REQUIRED)
 find_package(TclStub REQUIRED)
 find_package(X11 REQUIRED)
+find_package(PCAP)
 pkg_check_modules(OTCL REQUIRED otcl)
 pkg_check_modules(TCLCL REQUIRED tclcl)
 

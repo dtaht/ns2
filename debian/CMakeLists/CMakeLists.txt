@@ -80,6 +80,7 @@ include_directories(
     ${OTCL_INCLUDE_DIRS}
     ${TCLCL_INCLUDE_DIRS}
     ${INCLUDE_SUB_DIR}
+	${PCAP_INCLUDE_DIRS}
 )
 set(nse_SRC
     common/tclAppInit.cc
@@ -89,7 +90,7 @@ set(nse_SRC
     ${OBJ_EMULATE_C}
 )
 add_executable(nse ${nse_SRC})
-target_link_libraries(nse ${TCL_LIBRARY} ${TCL_STUB_LIBRARY} ${TK_LIBRARY} ${TK_STUB_LIBRARY} ${OTCL_LIBRARIES} ${TCLCL_LIBRARIES})
+target_link_libraries(nse -lnsl -ldl -lm ${X11_LIBRARIES} ${X11_Xext_LIB} ${PCAP_LIBRARIES} ${TCL_LIBRARY} ${TCL_STUB_LIBRARY} ${TK_LIBRARY} ${TK_STUB_LIBRARY} ${OTCL_LIBRARIES} ${TCLCL_LIBRARIES})
 install(TARGETS nse RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 
 #######################################################################################
