@@ -7,15 +7,14 @@ export DH_VERBOSE=1
 %:
 	dh  $@
 
-# these files have something warning
-override_dh_auto_clean:
-	dh_auto_clean -a
-	find . -name "*.o" -exec rm {} \;
-	find . -name ".cvsignore" -exec rm {} \;
-
-override_dh_auto_install:
-	mkdir -p debian/tmp/usr/bin
-	dh_auto_install
+override_dh_auto_configure:
+	cp -r CMakeLists.txt config-ns.h.cmake cmake .
+	cp CMakeLists.txt-setdest indep-utils/cmu-scen-gen/setdest/CMakeLists.txt
+	cp CMakeLists.txt-webtrace-conv-dec indep-utils/webtrace-conv/dec/CMakeLists.txt
+	cp CMakeLists.txt-webtrace-conv-epa indep-utils/webtrace-conv/epa/CMakeLists.txt
+	cp CMakeLists.txt-webtrace-conv-nlanr indep-utils/webtrace-conv/nlanr/CMakeLists.txt
+	cp CMakeLists.txt-webtrace-conv-ucb indep-utils/webtrace-conv/ucb/CMakeLists.txt
+	dh_auto_configure -Scmake
 
 override_dh_strip:
 	dh_strip --dbg-package=ns2-dbg
