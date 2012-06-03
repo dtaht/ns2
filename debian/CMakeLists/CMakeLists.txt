@@ -24,44 +24,10 @@ if(NOT DEFINED MAN_INSTALL_DIR)
     set(MAN_INSTALL_DIR "${DATA_INSTALL_DIR}/man")
 endif(NOT DEFINED MAN_INSTALL_DIR)
 
-find_package(PERL REQUIRED)
-find_package(TCL REQUIRED)
-find_package(TclStub REQUIRED)
-pkg_check_modules(OTCL REQUIRED otcl)
-pkg_check_modules(TCLCL REQUIRED tclcl)
-
-INCLUDE (CheckFunctionExists)
-INCLUDE (CheckIncludeFiles)
-INCLUDE (CheckTypeSize)
-
-CHECK_INCLUDE_FILES(stdlib.h STDC_HEADERS)
-CHECK_INCLUDE_FILES(string.h HAVE_STRING_H)
-CHECK_INCLUDE_FILES(strings.h STRINGS_H)
-CHECK_INCLUDE_FILES(arpa/inet.h HAVE_ARPA_INET_H)
-CHECK_INCLUDE_FILES(netinet/in.h HAVE_NETINET_IN_H)
-CHECK_INCLUDE_FILES(net/ethernet.h HAVE_NET_ETHERNET_H)
-CHECK_INCLUDE_FILES(fenv.h HAVE_FENV_H)
-
-CHECK_TYPE_SIZE("long" SIZEOF_LONG)
-CHECK_TYPE_SIZE("socklen_t" SOCKLEN_T)
-
-CHECK_FUNCTION_EXISTS(bcopy HAVE_BCOPY)
-CHECK_FUNCTION_EXISTS(bzero HAVE_BZERO)
-CHECK_FUNCTION_EXISTS(getrusage HAVE_GETRUSAGE)
-CHECK_FUNCTION_EXISTS(sbrk HAVE_SBRK)
-CHECK_FUNCTION_EXISTS(snprintf HAVE_SNPRINTF)
-CHECK_FUNCTION_EXISTS(strtoll HAVE_STRTOLL)
-CHECK_FUNCTION_EXISTS(strtoq HAVE_STRTOQ)
-CHECK_FUNCTION_EXISTS(addr2ascii HAVE_ADDR2ASCII)
-CHECK_FUNCTION_EXISTS(feenableexcept HAVE_FEENABLEEXCEPT)
-
-CHECK_TYPE_SIZE("struct ether_header" HAVE_ETHER_HEADER_STRUCT)
-CHECK_TYPE_SIZE("struct ether_addr" HAVE_ETHER_ADDRESS_STRUCT)
-
-CHECK_SYMBOL_EXISTS("SIOCGIFHWADDR" net/ethernet.h HAVE_SIOCGIFHWADDR)
-
-configure_file(config-nam.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/autoconf.h)
-
+add_definitions(-DHAVE_CONFIG_H)
+add_definitions(-DCPP_NAMESPACE=std)
+add_definitions(-DSTL_NAMESPACE=std)
+INCLUDE(CheckModules)
 #######################################################################
 ## common/ptypes2tcl
 include_directories(
@@ -79,7 +45,6 @@ target_link_libraries(ptypes2tcl)
 #######################################################################
 ### source code files
 include(SourceFiles)
-
 ################################################################
 ### ns 
 include_directories(
@@ -99,7 +64,7 @@ set(ns_SRC
 )
 
 add_executable(ns ${ns_SRC})
-target_link_libraries(ns ${TCL_LIBRARY} ${TCL_STUB_LIBRARY} ${TK_LIBRARY} ${TK_STUB_LIBRARY} ${OTCL_LIBRARIES} ${TCLCL_LIBRARIES})
+target_link_libraries(ns -lnsl -ldl -lm ${X11_LIBRARIES} ${X11_Xext_LIB} ${TCL_LIBRARY} ${TCL_STUB_LIBRARY} ${TK_LIBRARY} ${TK_STUB_LIBRARY} ${OTCL_LIBRARIES} ${TCLCL_LIBRARIES})
 install(TARGETS ns RUNTIME DESTINATION ${BIN_INSTALL_DIR})
 
 install(FILES ns.1 DESTINATION ${MAN_INSTALL_DIR}/man1)

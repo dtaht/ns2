@@ -8,6 +8,10 @@
 #cmakedefine NSPERL_PATH "${PERL_EXECUTABLE}"
 #cmakedefine NSTCLSH_PATH "${TCL_TCLSH}"
 
+#ifndef _XOPEN_SOURCE_EXTENDED
+#define _XOPEN_SOURCE_EXTENDED
+#endif
+
 #define RANDOM_RETURN_TYPE long int
 #cmakedefine SIZEOF_LONG ${SIZEOF_LONG}
 #cmakedefine HAVE_SOCKLEN_T 1
@@ -36,14 +40,14 @@
 #define NO_TK
 #define NS_DIFFUSION
 #define SMAC_NO_SYNC
-#define E_SINGLE_ADDRESS_SPACE
+#define USE_SINGLE_ADDRESS_SPACE
 #define rng_test
 
 /* stl */
 #ifdef __cplusplus
 #define HAVE_STL
 
-#undef CPP_REQUIRES_NAMESPACE 
+#undef CPP_REQUIRES_NAMESPACE
 #ifdef CPP_REQUIRES_NAMESPACE
 
 #ifndef CPP_NAMESPACE

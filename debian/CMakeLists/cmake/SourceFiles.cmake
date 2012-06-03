@@ -19,7 +19,7 @@ set(OBJ_EMULATE_C
 
 set(INCLUDE_SUB_DIR
 	${CMAKE_CURRENT_SOURCE_DIR}/tcp
-	${CMAKE_CURRENT_SOURCE_DIR}/stcp
+	${CMAKE_CURRENT_SOURCE_DIR}/sctp
 	${CMAKE_CURRENT_SOURCE_DIR}/common
 	${CMAKE_CURRENT_SOURCE_DIR}/link
 	${CMAKE_CURRENT_SOURCE_DIR}/queue
@@ -54,17 +54,17 @@ set(NS_TCL_LIB_STL
 STRING(REPLACE ";" "	" NS_TCL_LIB_STL "${NS_TCL_LIB_STL}")
 
 add_custom_command(OUTPUT version.c ns_tcl.cc ptypes.cc
-  COMMAND ${TCL_TCLSH} bin/string2c.tcl version_string < VERSION > version.c
+  COMMAND ${TCL_TCLSH} ${CMAKE_CURRENT_SOURCE_DIR}/bin/string2c.tcl version_string < ${CMAKE_CURRENT_SOURCE_DIR}/VERSION > version.c
   COMMAND ./ptypes2tcl > ptypes.cc
-  COMMAND ${TCL_TCLSH} bin/tcl-expand.tcl tcl/lib/ns-lib.tcl ${NS_TCL_LIB_STL} | tcl2c++ et_ns_lib > ns_tcl.cc
+  COMMAND ${TCL_TCLSH} ${CMAKE_CURRENT_SOURCE_DIR}/bin/tcl-expand.tcl ${CMAKE_CURRENT_SOURCE_DIR}/tcl/lib/ns-lib.tcl ${NS_TCL_LIB_STL} | tcl2c++ et_ns_lib > ns_tcl.cc
   DEPENDS ptypes2tcl
-}
+)
 
 set(OBJ_GEN
 	version.c
 	ns_tcl.cc
 	ptypes.cc
-}
+)
 
 set(OBJ_COMPAT
 	common/win32.c
@@ -122,7 +122,7 @@ set(OBJ_CC
   classifier/classifier-bst.cc classifier/classifier-mpath.cc mcast/replicator.cc
   classifier/classifier-mac.cc classifier/classifier-qs.cc 
   classifier/classifier-port.cc src_rtg/classifier-sr.cc
-  src_rtg/sragent.cc src_rtg/hdr_src.o adc/ump.cc
+  src_rtg/sragent.cc src_rtg/hdr_src.cc adc/ump.cc
   qs/qsagent.cc qs/hdr_qs.cc apps/app.cc apps/telnet.cc tcp/tcplib-telnet.cc
   tools/trafgen.cc trace/traffictrace.cc tools/pareto.cc tools/expoo.cc 
   tools/cbr_traffic.cc adc/tbf.cc adc/resv.cc adc/sa.cc tcp/saack.cc
@@ -282,4 +282,3 @@ set(OBJ
    ${OBJ_COMPAT}
 )
 
-STRING(REPLACE ";" "	" OBJ "${OBJ}")
