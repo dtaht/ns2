@@ -8,7 +8,7 @@ DEB_HOST_MULTIARCH ?= dpkg-architecture -qDEB_HOST_MULTIARCH
 	dh  $@
 
 override_dh_auto_clean:
-	make distclean
+	-make distclean
 	dh_auto_clean
 
 override_dh_auto_configure:
