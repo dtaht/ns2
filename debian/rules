@@ -1,20 +1,18 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 export DH_VERBOSE=1
-
+DEB_HOST_MULTIARCH ?= dpkg-architecture -qDEB_HOST_MULTIARCH
 # in doc dir ,make will be failed.
 
 %:
 	dh  $@
 
+override_dh_auto_clean:
+	make distclean
+	dh_auto_clean
+
 override_dh_auto_configure:
-	cp -r debian/CMakeLists/CMakeLists.txt debian/CMakeLists/config-ns.h.cmake debian/CMakeLists/cmake .
-	cp debian/CMakeLists/CMakeLists.txt-setdest indep-utils/cmu-scen-gen/setdest/CMakeLists.txt
-	cp debian/CMakeLists/CMakeLists.txt-webtrace-conv-dec indep-utils/webtrace-conv/dec/CMakeLists.txt
-	cp debian/CMakeLists/CMakeLists.txt-webtrace-conv-epa indep-utils/webtrace-conv/epa/CMakeLists.txt
-	cp debian/CMakeLists/CMakeLists.txt-webtrace-conv-nlanr indep-utils/webtrace-conv/nlanr/CMakeLists.txt
-	cp debian/CMakeLists/CMakeLists.txt-webtrace-conv-ucb indep-utils/webtrace-conv/ucb/CMakeLists.txt
-	dh_auto_configure -Scmake
+	dh_auto_configure -- --x-libraries=/usr/lib/$(DEB_HOST_MULTIARCH)
 
 override_dh_strip:
 	dh_strip --dbg-package=ns2-dbg

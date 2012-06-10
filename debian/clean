@@ -1,9 +1,0 @@
-indep-utils/cmu-scen-gen/setdest/CMakeLists.txt
-indep-utils/cmu-scen-gen/setdest/CMakeLists.txt
-indep-utils/webtrace-conv/epa/CMakeLists.txt
-indep-utils/webtrace-conv/nlanr/CMakeLists.txt
-indep-utils/webtrace-conv/dec/CMakeLists.txt
-indep-utils/webtrace-conv/ucb/CMakeLists.txt
-CMakeLists.txt
-config-ns.h.cmake
-cmake/*

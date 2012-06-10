@@ -1,8 +1,8 @@
 Description: there is some test that is not portable,so disable them
 Index: ns2/validate
 ===================================================================
---- ns2.orig/validate	2011-11-13 16:11:43.594633049 +0800
-+++ ns2/validate	2011-11-13 16:14:07.555346913 +0800
+--- ns2.orig/validate	2012-06-03 23:28:54.416171290 +0800
++++ ns2/validate	2012-06-10 20:59:50.711417517 +0800
 @@ -139,7 +139,7 @@
                          echo "You may want to upgrade to a more recent version of Cygwin.";
                  fi;
@@ -12,3 +12,16 @@ Index: ns2/validate
  else
          echo ""
  	echo "validate overall report: all tests passed"
+Index: ns2/linkstate/ls.h
+===================================================================
+--- ns2.orig/linkstate/ls.h	2012-06-03 23:28:54.364171035 +0800
++++ ns2/linkstate/ls.h	2012-06-10 21:14:06.775662513 +0800
+@@ -134,7 +134,7 @@
+ 		return ib.second ? ib.first : baseMap::end();
+ 	}
+ 
+-	void eraseAll() { erase(baseMap::begin(), baseMap::end()); }
++	void eraseAll() { baseMap::erase(baseMap::begin(), baseMap::end()); }
+ 	T* findPtr(Key key) {
+ 		iterator it = baseMap::find(key);
+ 		return (it == baseMap::end()) ? (T *)NULL : &((*it).second);

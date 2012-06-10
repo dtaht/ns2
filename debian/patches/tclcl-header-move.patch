@@ -2,8 +2,8 @@ Description: tclcl's debian packages ship its headers to /usr/include/tclcl
               instead of /usr/include/
 Index: ns2/configure
 ===================================================================
---- ns2.orig/configure	2011-11-13 16:11:43.658633371 +0800
-+++ ns2/configure	2011-11-13 16:12:29.406860223 +0800
+--- ns2.orig/configure	2012-06-10 23:28:53.000000000 +0800
++++ ns2/configure	2012-06-10 23:31:09.356606841 +0800
 @@ -6650,7 +6650,8 @@
                  /import/Tcl/include \
                  /usr/local/include \
@@ -14,3 +14,82 @@ Index: ns2/configure
  TCLCL_H_PLACES_D="$d \
   		$d/include"
  TCLCL_LIB_PLACES="\
+Index: ns2/packmime/packmime_OL.h
+===================================================================
+--- ns2.orig/packmime/packmime_OL.h	2012-06-10 23:28:53.000000000 +0800
++++ ns2/packmime/packmime_OL.h	2012-06-10 23:31:09.356606841 +0800
+@@ -73,7 +73,7 @@
+ 	void init();
+ 	int size_;
+ 	int seqno_;
+-	int64_t maxpkts_;	
++	int maxpkts_;
+ 	
+ 	// statistics objects
+ 	RandomVariable* pm_pac_ia_;
+Index: ns2/tools/queue-monitor.h
+===================================================================
+--- ns2.orig/tools/queue-monitor.h	2012-06-10 23:28:53.000000000 +0800
++++ ns2/tools/queue-monitor.h	2012-06-10 23:31:09.360606868 +0800
+@@ -100,17 +100,10 @@
+ 
+ 	int size() const { return (size_); }
+ 	int pkts() const { return (pkts_); }
+-#if defined(HAVE_INT64)
+-	int64_t parrivals() const { return (parrivals_); }	
+-	int64_t barrivals() const { return (barrivals_); }
+-	int64_t pdepartures() const { return (pdepartures_); }
+-	int64_t bdepartures() const { return (bdepartures_); }
+-#else /* no 64-bit integer */
+ 	int parrivals() const { return (parrivals_); }
+ 	int barrivals() const { return (barrivals_); }
+ 	int pdepartures() const { return (pdepartures_); }
+ 	int bdepartures() const { return (bdepartures_); }
+-#endif
+ 	int pdrops() const { return (pdrops_); }
+ 	int pmarks() const { return (pmarks_); }
+ 	int bdrops() const { return (bdrops_); }
+@@ -136,17 +129,10 @@
+ 	int size_;			// current queue size (bytes)
+ 	int pkts_;			// current queue size (packets)
+ 	// aggregate counters bytes/packets
+-#if defined(HAVE_INT64)
+-	int64_t parrivals_;
+-	int64_t barrivals_;
+-	int64_t pdepartures_;
+-	int64_t bdepartures_;
+-#else /* no 64-bit integer */
+ 	int parrivals_;
+ 	int barrivals_;
+ 	int pdepartures_;
+ 	int bdepartures_;
+-#endif
+ 	int pdrops_;
+ 	int pmarks_;
+ 	int bdrops_;
+Index: ns2/indep-utils/cmu-scen-gen/setdest/Makefile.in
+===================================================================
+--- ns2.orig/indep-utils/cmu-scen-gen/setdest/Makefile.in	2012-06-10 23:28:53.000000000 +0800
++++ ns2/indep-utils/cmu-scen-gen/setdest/Makefile.in	2012-06-10 23:31:09.360606868 +0800
+@@ -81,7 +81,7 @@
+ 	$(CCX) -o setbox $@.o $(LDFLAGS) $(CFLAGS) $(LIBS)
+ 
+ clean:
+-	@rm -f setdest setbox *.o *.core
++	@rm -f setdest calcdest setbox *.o *.core
+ 
+ .SUFFIXES: .cc
+ 
+Index: ns2/Makefile.in
+===================================================================
+--- ns2.orig/Makefile.in	2012-06-10 23:31:09.336606739 +0800
++++ ns2/Makefile.in	2012-06-10 23:32:31.869016001 +0800
+@@ -542,7 +542,7 @@
+ common/ptypes2tcl.o: common/ptypes2tcl.cc common/packet.h
+ 
+ dirs:
+-	for d in $(DESTDIR)$(MANDEST)/man1; do \
++	for d in $(DESTDIR)$(MANDEST)/man1 $(DESTDIR)$(BINDEST); do \
+ 		if [ ! -d $$d ]; then \
+ 			mkdir -p $$d ;\
+ 		fi;\

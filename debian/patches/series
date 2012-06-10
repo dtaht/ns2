@@ -1,2 +1,3 @@
 validate-test-exit-number
-namespace_std_in_headers.patch
+install-indep-utils.diff
+tclcl-header-move.patch
