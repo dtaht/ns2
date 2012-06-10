@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Network Simulators Team <pkg-netsim-devel@lists.alioth.debian.org>
 Uploaders: YunQiang Su <wzssyqa@gmail.com>
 DM-Upload-Allowed: yes
-Build-Depends: debhelper (>= 7.0.50~), quilt (>= 0.46-7~), cmake, 
+Build-Depends: debhelper (>= 9), quilt (>= 0.46-7~), cmake, 
 		tcl-dev, tk-dev, libxext-dev, libxt-dev, xgraph, libpcap0.8-dev,
 		libotcl1-dev, tclcl, libtclcl1-dev  (>=1.20-6~), perl (>=5.003)
 Standards-Version: 3.9.3
