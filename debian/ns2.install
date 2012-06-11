@@ -1,1 +1,3 @@
 usr/bin/*
+nse /usr/bin/
+nstk /usr/bin/
