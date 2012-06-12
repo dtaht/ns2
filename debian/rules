@@ -3,6 +3,8 @@
 export DH_VERBOSE=1
 DEB_HOST_MULTIARCH ?= dpkg-architecture -qDEB_HOST_MULTIARCH
 # in doc dir ,make will be failed.
+CFLAGS += $(CPPFLAGS)
+CXXFLAGS += $(CPPFLAGS)
 
 %:
 	dh  $@
