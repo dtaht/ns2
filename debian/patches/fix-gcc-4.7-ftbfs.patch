@@ -1,17 +1,4 @@
-Description: there is some test that is not portable,so disable them
-Index: ns2/validate
-===================================================================
---- ns2.orig/validate	2012-06-03 23:28:54.416171290 +0800
-+++ ns2/validate	2012-06-10 20:59:50.711417517 +0800
-@@ -139,7 +139,7 @@
-                         echo "You may want to upgrade to a more recent version of Cygwin.";
-                 fi;
-         fi;
--	exit 1
-+	exit 0
- else
-         echo ""
- 	echo "validate overall report: all tests passed"
+Description: fix gcc 4.7 ftbfs
 Index: ns2/linkstate/ls.h
 ===================================================================
 --- ns2.orig/linkstate/ls.h	2012-06-03 23:28:54.364171035 +0800

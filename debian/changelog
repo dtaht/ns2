@@ -4,6 +4,7 @@ ns2 (2.35+dfsg-1) unstable; urgency=low
   * add dfsg-orig tag to debian/rules.
   * add ns2-dbg package.
   * Fix FTBFS (Closes: #654261, #669431).
+  * Don't compress tcl and validate files (lp: #939306)
 
  -- YunQiang Su <wzssyqa@gmail.com>  Sun, 03 Jun 2012 13:59:44 +0800
 
