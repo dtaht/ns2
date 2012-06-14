@@ -1,0 +1,107 @@
+From: Aron Xu <aron@debian.org>
+Date: Fri, 15 Jun 2012 03:11:02 +0800
+Subject: correct paths in examples
+
+---
+ tcl/ex/asym/asym-test-2.tcl    |    2 +-
+ tcl/ex/tcp-fs/drop.awk         |    2 +-
+ tcl/ex/tcp-fs/inst-thruput.awk |    2 +-
+ tcl/ex/tcp-fs/process.awk      |    2 +-
+ tcl/ex/tcp-fs/resptime.awk     |    2 +-
+ tcl/ex/tcp-fs/run-fs-asym.tcl  |    2 +-
+ tcl/ex/tcp-fs/run.tcl          |    2 +-
+ tcl/ex/tcp-fs/thruput.awk      |    2 +-
+ tcl/session/scaling-tree.tcl   |    2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/tcl/ex/asym/asym-test-2.tcl b/tcl/ex/asym/asym-test-2.tcl
+index 9db1928..912b42b 100755
+--- a/tcl/ex/asym/asym-test-2.tcl
++++ b/tcl/ex/asym/asym-test-2.tcl
+@@ -1,4 +1,4 @@
+-#!../../../../ns
++#!/usr/bin/ns
+ #source ../../../lan/ns-lan.tcl
+ source ../../../ex/asym/util.tcl
+ 
+diff --git a/tcl/ex/tcp-fs/drop.awk b/tcl/ex/tcp-fs/drop.awk
+index 6dbbc11..3625993 100755
+--- a/tcl/ex/tcp-fs/drop.awk
++++ b/tcl/ex/tcp-fs/drop.awk
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/gawk -f
++#!/usr/bin/gawk -f
+ BEGIN {
+ 	fsDrops = 0;
+ 	otherDrops = 0;
+diff --git a/tcl/ex/tcp-fs/inst-thruput.awk b/tcl/ex/tcp-fs/inst-thruput.awk
+index b26f626..ae081ae 100755
+--- a/tcl/ex/tcp-fs/inst-thruput.awk
++++ b/tcl/ex/tcp-fs/inst-thruput.awk
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/gawk -f
++#!/usr/bin/gawk -f
+ {
+ 	time = $2;
+ 	saddr = $4;
+diff --git a/tcl/ex/tcp-fs/process.awk b/tcl/ex/tcp-fs/process.awk
+index 48ce788..825bd4f 100755
+--- a/tcl/ex/tcp-fs/process.awk
++++ b/tcl/ex/tcp-fs/process.awk
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/gawk -f
++#!/usr/bin/gawk -f
+ BEGIN {
+ 	erriter = -1;
+ }
+diff --git a/tcl/ex/tcp-fs/resptime.awk b/tcl/ex/tcp-fs/resptime.awk
+index 39b74b9..cc4178b 100755
+--- a/tcl/ex/tcp-fs/resptime.awk
++++ b/tcl/ex/tcp-fs/resptime.awk
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/gawk -f
++#!/usr/bin/gawk -f
+ {
+ 	if (NR > 1) 
+ 		sum += ($3 - $2);
+diff --git a/tcl/ex/tcp-fs/run-fs-asym.tcl b/tcl/ex/tcp-fs/run-fs-asym.tcl
+index aefe248..d9530c0 100755
+--- a/tcl/ex/tcp-fs/run-fs-asym.tcl
++++ b/tcl/ex/tcp-fs/run-fs-asym.tcl
+@@ -1,4 +1,4 @@
+-#! /usr/sww/bin/tclsh
++#! /usr/bin/tclsh
+ 
+ set burstsize 30
+ set firstburstsize 0
+diff --git a/tcl/ex/tcp-fs/run.tcl b/tcl/ex/tcp-fs/run.tcl
+index d0a7e1c..791447c 100755
+--- a/tcl/ex/tcp-fs/run.tcl
++++ b/tcl/ex/tcp-fs/run.tcl
+@@ -1,4 +1,4 @@
+-#! /usr/local/bin/tclsh
++#! /usr/bin/tclsh
+ 
+ #set pdrop_opt {-null -null "-recn -rdrop" "-pdrop" "-recn -rdrop -pdrop"}
+ #set tcptype_opt {-fack -fackfs -fackfs -fackfs -fackfs}
+diff --git a/tcl/ex/tcp-fs/thruput.awk b/tcl/ex/tcp-fs/thruput.awk
+index 79c8e4e..e8e7911 100755
+--- a/tcl/ex/tcp-fs/thruput.awk
++++ b/tcl/ex/tcp-fs/thruput.awk
+@@ -1,4 +1,4 @@
+-#!/usr/local/bin/gawk -f
++#!/usr/bin/gawk -f
+ BEGIN {
+ 	s = "";
+ }
+diff --git a/tcl/session/scaling-tree.tcl b/tcl/session/scaling-tree.tcl
+index c8c4931..310ded1 100755
+--- a/tcl/session/scaling-tree.tcl
++++ b/tcl/session/scaling-tree.tcl
+@@ -1,4 +1,4 @@
+-#! ../../ns
++#!/usr/bin/ns
+ source scaling-defaults.tcl
+ 
+ # Usage tree.tcl -rand 1.0 -det 0.05 -seed -size $max >! tmp.dat
+-- 

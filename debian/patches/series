@@ -1,3 +1,4 @@
-install-indep-utils.diff
-tclcl-header-move.patch
-fix-gcc-4.7-ftbfs.patch
+0001-install-indep-utils.diff.patch
+0002-tclcl-header-move.patch.patch
+0003-fix-gcc-4.7-ftbfs.patch.patch
+0004-correct-paths-in-examples.patch

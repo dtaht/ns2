@@ -1,0 +1,22 @@
+From: YunQiang Su <wzssyqa@gmail.com>
+Date: Fri, 15 Jun 2012 03:01:12 +0800
+Subject: fix-gcc-4.7-ftbfs.patch
+
+---
+ linkstate/ls.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/linkstate/ls.h b/linkstate/ls.h
+index 5a7800a..ba91c3d 100644
+--- a/linkstate/ls.h
++++ b/linkstate/ls.h
+@@ -134,7 +134,7 @@ public:
+ 		return ib.second ? ib.first : baseMap::end();
+ 	}
+ 
+-	void eraseAll() { erase(baseMap::begin(), baseMap::end()); }
++	void eraseAll() { baseMap::erase(baseMap::begin(), baseMap::end()); }
+ 	T* findPtr(Key key) {
+ 		iterator it = baseMap::find(key);
+ 		return (it == baseMap::end()) ? (T *)NULL : &((*it).second);
+-- 

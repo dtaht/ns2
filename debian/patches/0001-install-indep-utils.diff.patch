@@ -1,0 +1,22 @@
+From: YunQiang Su <wzssyqa@gmail.com>
+Date: Fri, 15 Jun 2012 03:01:12 +0800
+Subject: install-indep-utils.diff
+
+---
+ Makefile.in |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 2e6ff5f..f53d78a 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -549,7 +549,7 @@ dirs:
+ 	done
+ 
+ 
+-install: dirs force install-ns install-man
++install: dirs force install-ns install-man install-recursive
+ 
+ install-ns: force
+ 	$(INSTALL) -m 755 ns $(DESTDIR)$(BINDEST)
+-- 

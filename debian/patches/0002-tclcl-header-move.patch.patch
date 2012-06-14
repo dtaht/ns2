@@ -1,0 +1,106 @@
+From: YunQiang Su <wzssyqa@gmail.com>
+Date: Fri, 15 Jun 2012 03:01:12 +0800
+Subject: tclcl-header-move.patch
+
+---
+ Makefile.in                                  |    2 +-
+ configure                                    |    3 ++-
+ indep-utils/cmu-scen-gen/setdest/Makefile.in |    2 +-
+ packmime/packmime_OL.h                       |    2 +-
+ tools/queue-monitor.h                        |   14 --------------
+ 5 files changed, 5 insertions(+), 18 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index f53d78a..55800ee 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -542,7 +542,7 @@ common/ptypes2tcl: common/ptypes2tcl.o
+ common/ptypes2tcl.o: common/ptypes2tcl.cc common/packet.h
+ 
+ dirs:
+-	for d in $(DESTDIR)$(MANDEST)/man1; do \
++	for d in $(DESTDIR)$(MANDEST)/man1 $(DESTDIR)$(BINDEST); do \
+ 		if [ ! -d $$d ]; then \
+ 			mkdir -p $$d ;\
+ 		fi;\
+diff --git a/configure b/configure
+index 9031812..2429fad 100755
+--- a/configure
++++ b/configure
+@@ -6650,7 +6650,8 @@ TCLCL_H_PLACES="\
+                 /import/Tcl/include \
+                 /usr/local/include \
+                 /usr/contrib/include \
+-                /usr/include"
++                /usr/include \
++                /usr/include/tclcl"
+ TCLCL_H_PLACES_D="$d \
+  		$d/include"
+ TCLCL_LIB_PLACES="\
+diff --git a/indep-utils/cmu-scen-gen/setdest/Makefile.in b/indep-utils/cmu-scen-gen/setdest/Makefile.in
+index 21f75c2..b69aa7d 100644
+--- a/indep-utils/cmu-scen-gen/setdest/Makefile.in
++++ b/indep-utils/cmu-scen-gen/setdest/Makefile.in
+@@ -81,7 +81,7 @@ setbox: setbox.o
+ 	$(CCX) -o setbox $@.o $(LDFLAGS) $(CFLAGS) $(LIBS)
+ 
+ clean:
+-	@rm -f setdest setbox *.o *.core
++	@rm -f setdest calcdest setbox *.o *.core
+ 
+ .SUFFIXES: .cc
+ 
+diff --git a/packmime/packmime_OL.h b/packmime/packmime_OL.h
+index 59dce30..d4bc037 100644
+--- a/packmime/packmime_OL.h
++++ b/packmime/packmime_OL.h
+@@ -73,7 +73,7 @@ class PackMimeOpenLoop : public TrafficGenerator {
+ 	void init();
+ 	int size_;
+ 	int seqno_;
+-	int64_t maxpkts_;	
++	int maxpkts_;
+ 	
+ 	// statistics objects
+ 	RandomVariable* pm_pac_ia_;
+diff --git a/tools/queue-monitor.h b/tools/queue-monitor.h
+index 789c8db..aabb5e3 100644
+--- a/tools/queue-monitor.h
++++ b/tools/queue-monitor.h
+@@ -100,17 +100,10 @@ public:
+ 
+ 	int size() const { return (size_); }
+ 	int pkts() const { return (pkts_); }
+-#if defined(HAVE_INT64)
+-	int64_t parrivals() const { return (parrivals_); }	
+-	int64_t barrivals() const { return (barrivals_); }
+-	int64_t pdepartures() const { return (pdepartures_); }
+-	int64_t bdepartures() const { return (bdepartures_); }
+-#else /* no 64-bit integer */
+ 	int parrivals() const { return (parrivals_); }
+ 	int barrivals() const { return (barrivals_); }
+ 	int pdepartures() const { return (pdepartures_); }
+ 	int bdepartures() const { return (bdepartures_); }
+-#endif
+ 	int pdrops() const { return (pdrops_); }
+ 	int pmarks() const { return (pmarks_); }
+ 	int bdrops() const { return (bdrops_); }
+@@ -136,17 +129,10 @@ protected:
+ 	int size_;			// current queue size (bytes)
+ 	int pkts_;			// current queue size (packets)
+ 	// aggregate counters bytes/packets
+-#if defined(HAVE_INT64)
+-	int64_t parrivals_;
+-	int64_t barrivals_;
+-	int64_t pdepartures_;
+-	int64_t bdepartures_;
+-#else /* no 64-bit integer */
+ 	int parrivals_;
+ 	int barrivals_;
+ 	int pdepartures_;
+ 	int bdepartures_;
+-#endif
+ 	int pdrops_;
+ 	int pmarks_;
+ 	int bdrops_;
+-- 
