@@ -41,7 +41,7 @@
 #include "template.h"
 #include "trace.h"
 
-// we need a multi-valued return and C doesn't help
+// we need a multi-valued return and C doesn't want to do help
 struct dodequeResult { Packet* p; int ok_to_drop; };
 
 class CoDelQueue : public Queue {
