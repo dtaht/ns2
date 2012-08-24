@@ -1,5 +1,7 @@
 /*
- * fqCodel - The Controlled-Delay Active Queue Management algorithm
+ * sfqCodel - The Controlled-Delay Active Queue Management algorithm
+ * combined with stochastic flow binning ("smart flow queuing" as
+ * suggested by Jim Gettys)
  * Copyright (C) 2011-2012 Kathleen Nichols <nichols@pollere.com>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,8 +34,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef ns_fqcodel_h
-#define ns_fqcodel_h
+#ifndef ns_sfqcodel_h
+#define ns_sfqcodel_h
 
 #include "queue.h"
 #include <stdlib.h>
@@ -64,9 +66,9 @@ struct dodequeResult { Packet* p; int ok_to_drop; };
         bindesc* next;
     } ;
 
-class fqCoDelQueue : public Queue {
+class sfqCoDelQueue : public Queue {
   public:   
-    fqCoDelQueue();
+    sfqCoDelQueue();
   protected:
     // Stuff specific to the CoDel algorithm
     void enque(Packet* pkt);

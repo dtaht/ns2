@@ -1,11 +1,16 @@
 /*
- * fqCodel - The Controlled-Delay Active Queue Management algorithm
- * with stochastic binning. Inspired by Eric Dumazaet's linux code.
+ * sfqCodel - Smart Flow Queuing, Controlled-Delay Active Queue Management
+ * with stochastic binning. Inspired by Eric Dumazaet's linux code, FQ_codel.
  * This module was put together by Kathleen Nichols.
  * For expediency, this originally combined codel.cc and some aspects of
  * sfq.cc from the ns2 distribution, contributed by Curtis Villamizar, Feb, 1997.
- * A notable difference from Eric's code is that this uses packet-by-packet
- * round-robining, which we believe to be more appropriate, but need to test.
+ * Notable differences from Eric's code: this uses packet-by-packet
+ * round-robining, which we believe to be more appropriate (more testing
+ * woud be useful), this simply tail drops if the buffer space is full and
+ * this should be changed to something that drops fullest bin first (as in
+ * Dumazaet's code), this code keeps an empty bin on the schedule for one
+ * cycle (effectively preventing a flow from getting to go "first" too
+ * quickly)..
  * Van Jacobson contributed the hash to attempt to model linux kernel hash.
  * This is experimental code, for implementation, see Dumazaet's code. 
  *
@@ -51,17 +56,17 @@
 #include "random.h"
 #include "flags.h"
 #include "delay.h"
-#include "fqcodel.h"
+#include "sfqcodel.h"
 
-static class fqCoDelClass : public TclClass {
+static class sfqCoDelClass : public TclClass {
   public:
-    fqCoDelClass() : TclClass("Queue/fqCoDel") {}
+    sfqCoDelClass() : TclClass("Queue/sfqCoDel") {}
     TclObject* create(int, const char*const*) {
-        return (new fqCoDelQueue);
+        return (new sfqCoDelQueue);
     }
 } class_codel;
 
-fqCoDelQueue::fqCoDelQueue() : tchan_(0)
+sfqCoDelQueue::sfqCoDelQueue() : tchan_(0)
 {
     bind("interval_", &interval_);
     bind("target_", &target_);  // target min delay in clock ticks
@@ -80,7 +85,7 @@ fqCoDelQueue::fqCoDelQueue() : tchan_(0)
     reset();
 }
 
-void fqCoDelQueue::reset()
+void sfqCoDelQueue::reset()
 {
     binsched_ = NULL;
     curq_ = 0;
@@ -97,7 +102,7 @@ void fqCoDelQueue::reset()
 // More sophisticated approaches can prevent a single flow from taking over
 // a limited buffer.
 
-void fqCoDelQueue::enque(Packet* pkt)
+void sfqCoDelQueue::enque(Packet* pkt)
 {
     // check for tail drop on full buffer
     if(curlen_ >= qlim_) {
@@ -217,7 +222,7 @@ static inline u_int32_t jhash_3words( u_int32_t a, u_int32_t b, u_int32_t c, u_i
 
 }
 
-unsigned int fqCoDelQueue::hash(Packet* pkt)
+unsigned int sfqCoDelQueue::hash(Packet* pkt)
 {
   hdr_ip* iph = hdr_ip::access(pkt);
   return jhash_3words(iph->daddr(), iph->saddr(),
@@ -225,14 +230,14 @@ unsigned int fqCoDelQueue::hash(Packet* pkt)
 }
 
 // return the time of the next drop relative to 't'
-double fqCoDelQueue::control_law(double t)
+double sfqCoDelQueue::control_law(double t)
 {
     return t + interval_ / sqrt(count_);
 }
 
 // Internal routine to dequeue a packet. All the delay and min tracking
 // is done here to make sure it's done consistently on every dequeue.
-dodequeResult fqCoDelQueue::dodeque(PacketQueue* q)
+dodequeResult sfqCoDelQueue::dodeque(PacketQueue* q)
 {
     double now = Scheduler::instance().clock();
     dodequeResult r = { NULL, 0 };
@@ -286,7 +291,7 @@ dodequeResult fqCoDelQueue::dodeque(PacketQueue* q)
 // pointer. If it's not binsched_, update binsched_ to be this value.
 // A null pointer means there is nothing to send on any bin.
 
-bindesc* fqCoDelQueue::readybin()
+bindesc* sfqCoDelQueue::readybin()
 {
     //get the next scheduled bin that has a non-empty queue,
     // set the binsched_ to that bin,
@@ -316,7 +321,7 @@ bindesc* fqCoDelQueue::readybin()
     return binsched_;
 }
 
-void fqCoDelQueue::removebin(bindesc* b) {
+void sfqCoDelQueue::removebin(bindesc* b) {
 
     while((b->q_)->length() == 0) {
        //clean up, remove bin from schedule
@@ -344,7 +349,7 @@ void fqCoDelQueue::removebin(bindesc* b) {
 // the next drop(s). If not in dropping state, decide if it’s time to enter it
 // and do the initial drop.
 
-Packet* fqCoDelQueue::deque()
+Packet* sfqCoDelQueue::deque()
 {
     double now = Scheduler::instance().clock();;
     bindesc* b;
@@ -360,7 +365,7 @@ Packet* fqCoDelQueue::deque()
     dropping_ = b->dropping_;
 
     r = dodeque( b->q_ );
-    if(r.p == NULL) printf("fqCoDelQueue::deque(): error\n");
+    if(r.p == NULL) printf("sfqCoDelQueue::deque(): error\n");
 
     if (dropping_) {
         if (! r.ok_to_drop) {
@@ -407,7 +412,7 @@ Packet* fqCoDelQueue::deque()
         // If min went above target close to when it last went below,
         // assume that the drop rate that controlled the queue on the
         // last cycle is a good starting point to control it now.
-	// Note: didn't put count_ decay line in fqcodel
+	// Note: didn't put count_ decay line in sfqcodel
         count_ = (count_ > 2 && now - drop_next_ < 8*interval_)? count_ - 2 : 1;
         drop_next_ = control_law(now);
     }
@@ -425,7 +430,7 @@ Packet* fqCoDelQueue::deque()
     return (r.p);
 }
 
-int fqCoDelQueue::command(int argc, const char*const* argv)
+int sfqCoDelQueue::command(int argc, const char*const* argv)
 {
     Tcl& tcl = Tcl::instance();
     if (argc == 2) {
@@ -440,7 +445,7 @@ int fqCoDelQueue::command(int argc, const char*const* argv)
             const char* id = argv[2];
             tchan_ = Tcl_GetChannel(tcl.interp(), (char*)id, &mode);
             if (tchan_ == 0) {
-                tcl.resultf("fqCoDel trace: can't attach %s for writing", id);
+                tcl.resultf("sfqCoDel trace: can't attach %s for writing", id);
                 return (TCL_ERROR);
             }
             return (TCL_OK);
@@ -463,13 +468,13 @@ printf("error in command\n");
 // Routine called by TracedVar facility when variables change values.
 // Note that the tracing of each var must be enabled in tcl to work.
 void
-fqCoDelQueue::trace(TracedVar* v)
+sfqCoDelQueue::trace(TracedVar* v)
 {
     const char *p;
 
     if (((p = strstr(v->name(), "curq")) == NULL) &&
         ((p = strstr(v->name(), "d_exp")) == NULL) ) {
-        fprintf(stderr, "fqCoDel: unknown trace var %s\n", v->name());
+        fprintf(stderr, "sfqCoDel: unknown trace var %s\n", v->name());
         return;
     }
     if (tchan_) {
